@@ -38,9 +38,9 @@ function promoBox(options) {
             }
             return null;
         },
-//        eraseCookie: function (name) {
-//            cookie.createCookie(name, "", -1);
-//        }
+        eraseCookie: function (name) {
+            cookie.createCookie(name, "", -1);
+        }
     }
 
     if (options.daysToSeeAgain) {
