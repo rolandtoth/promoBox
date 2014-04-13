@@ -2,15 +2,15 @@ function promoBox(options) {
 
     if (!options.imagePath) return false;
 
-    var currentDateEpoch = Math.round(new Date().getTime() / 1000.0);
+    var currentDateEpoch = Math.round(new Date().getTime() / 1000);
 
     if (options.startDate) {
-        var startDate = Math.round(new Date(options.startDate).getTime() / 1000.0);
+        var startDate = Math.round(new Date(options.startDate).getTime() / 1000);
         if (currentDateEpoch < startDate) return false;
     }
 
     if (options.endDate) {
-        var endDate = Math.round(new Date(options.endDate).getTime() / 1000.0);
+        var endDate = Math.round(new Date(options.endDate).getTime() / 1000);
         if (currentDateEpoch > endDate) return false;
     }
 
@@ -102,6 +102,7 @@ function promoBox(options) {
             if (promo.overlay && promo.overlay.parentNode) promo.overlay.parentNode.removeChild(promo.overlay);
             if (promo.container && promo.container.parentNode != undefined) promo.container.parentNode.removeChild(promo.container);
             if (typeof window[options.closeCallback] === 'function') window[options.closeCallback]();
+            if (autoCloseSeconds) clearTimeout(autoCloseSeconds);
             return false;
         }
     };
@@ -116,9 +117,11 @@ function promoBox(options) {
 
     promoFx.startPromo();
 
+    if (options.autoCloseSeconds) {
+        var autoCloseSeconds = setTimeout(function () {
+            promoFx.closeEvent();
+        }, options.autoCloseSeconds * 1000);
+    }
+
     return this;
 }
-
-// TODO add start callback
-// TODO add stop callback
-// TODO? countdown?
