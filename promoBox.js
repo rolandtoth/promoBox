@@ -53,6 +53,7 @@ function promoBox(options) {
             var obj = document.createElement(tag);
             obj.setAttribute(attr, value);
             if (text) obj.innerHTML = text;
+            
             return obj;
         },
         addStyle: function () {
