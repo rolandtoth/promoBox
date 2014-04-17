@@ -73,6 +73,7 @@ function promoBox(options) {
         addStyle: function () {
             var css = document.createElement('style');
             css.type = 'text/css';
+            css.id = 'promoStyle';
 
             styles = [
                 '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
@@ -127,6 +128,7 @@ function promoBox(options) {
         closeEvent: function (seconds) {
             if (promo.overlay && promo.overlay.parentNode) { promo.overlay.parentNode.removeChild(promo.overlay); }
             if (promo.container && promo.container.parentNode !== undefined) { promo.container.parentNode.removeChild(promo.container); }
+            if (document.getElementById('promoStyle')) { document.getElementById('promoStyle').parentNode.removeChild(document.getElementById('promoStyle')); }
             if (typeof window[options.closeCallback] === 'function') { window[options.closeCallback](); }
             if (seconds) { clearTimeout(autoCloseSeconds); }
             return false;
