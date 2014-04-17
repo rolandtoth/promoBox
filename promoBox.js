@@ -75,9 +75,9 @@ function promoBox(options) {
             css.type = 'text/css';
 
             styles = [
-                '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: rgba(0, 0, 0, 0.6); }',
-                '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; }',
-                '#promoContent { position: relative; display: inline-block; max-width: 80%; top: 16%; max-height: 80%; border-radius: 4px; border: 8px solid #fff; box-shadow: 0 0 2px #b4b4b4; z-index: 9992; }',
+                '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
+                '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: rgba(0, 0, 0, 0.6); pointer-events: all; }',
+                '#promoContent { position: relative; display: inline-block; max-width: 80%; top: 16%; max-height: 80%; border-radius: 4px; border: 8px solid #fff; box-shadow: 0 0 2px #b4b4b4; z-index: 9992; pointer-events: all; }',
                 '#promoContent img { max-width: 100%; height: auto; display: block; }',
                 '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 13px 18px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.12s all; }',
                 '#promoClose:hover { opacity: 1; cursor: pointer; }'
