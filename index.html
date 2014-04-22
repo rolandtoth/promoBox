@@ -5,15 +5,11 @@
     <meta charset="utf-8">
     <script src="promoBox.js" type="text/javascript"></script>
 </head>
-<body>
+<body style="background-color: #f1f2f3; text-align: center; padding: 30px 0;">
 
 <p>
-    Demo of promoBox JavaScript Promo Popup
-    <br /><br />
-    <a id="clickMe" href="#">Click here to trigger lightbox</a>
-    
-    <br /><br /><br />
-    
+    promoBox JavaScript Promo Popup Demo
+    <a id="clickMe" href="#" style="display: block; margin: 30px 0 60px;">Click here to trigger lightbox</a>
     <a href="https://github.com/rolandtoth/promoBox" title="" target="_blank" style="color: #bbb; text-decoration: none; font-size: 13px; font-weight: bold; text-shadow: 1px 1px rgba(255, 255, 255, 0.5); font-family: sans-serif;">promoBox</a>
 </p>
 
@@ -22,48 +18,38 @@
     window.onload = function () {
         promoBox({
             imagePath: 'bird.jpg',
-            link: 'http://rolandtoth.hu',
+            link: 'http://blog.rolandtoth.hu/post/82572422490/promobox-simple-javascript-promo-popup',
             target: '_blank',
-            disableOverlay: false,
-            disableOverlayClose: false,
-            disableStyles: false,
-            disableCloseButton: false,
-            closeButtonText: '',
+//            disableOverlay: true,
+//            disableOverlayClose: true,
+//            disableStyles: true,
+//            disableCloseButton: true,
+//            disableKeyClose: true,
+//            closeButtonText: '',
 //            showOnHash: '#promo',
 //            startDate: 'April 12, 2014 02:30:00',
-//            endDate: 'April 16, 2014 19:27:00',
+//            endDate: 'May 20, 2014 19:27:00',
 //            daysToSeeAgain: 0.33,
             startCallback: 'hello',
             closeCallback: 'bye',
-            autoCloseSeconds: 60
+            autoCloseSeconds: false
         });
     };
 
     document.getElementById('clickMe').onclick = function () {
         promoBox({
             imagePath: 'breeze.jpg',
-            link: false,
-            target: '_blank',
-            disableOverlay: false,
-            disableOverlayClose: false,
-            disableStyles: false,
-            disableCloseButton: false,
-            closeButtonText: 'close',
-            showOnHash: false,
-            startDate: false,
-            endDate: false,
-            daysToSeeAgain: false,
-            autoCloseSeconds: false
+            closeButtonText: 'close'
         });
 
         return false;
     };
 
     function hello() {
-        console.log('hi there!');
+        console.log('promoBox has started...');
     }
     function bye() {
-        console.log('See ya!');
+        console.log('promoBox terminated');
     }
     
 </script>
