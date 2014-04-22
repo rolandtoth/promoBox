@@ -7,7 +7,7 @@ Options
 -----------
 
 * **imagePath:** absolute or full path to the image to display (required)
-* *link:** url to visit when clicking on the image
+* **link:** url to visit when clicking on the image
 * **target:** link target (e.g. '_blank')
 * **disableOverlay:** whether to show the overlay background (true/false)
 * **disableOverlayClose:** whether to enable closing the lightbox clicking on the overlay (true/false)
