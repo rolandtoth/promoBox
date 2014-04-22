@@ -46,10 +46,14 @@
     };
 
     function hello() {
-        console.log('promoBox has started...');
+	    if (typeof console !== "undefined") {
+			console.log('promoBox has started...');
+        }
     }
     function bye() {
-        console.log('promoBox terminated');
+		if (typeof console !== "undefined") {
+			console.log('promoBox terminated');
+		}
     }
     
 </script>
