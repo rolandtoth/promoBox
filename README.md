@@ -23,4 +23,4 @@ Options
 * **closeCallback:** function name that is fired before showing the popup (string, e.g. 'afterPromo')
 * **autoCloseSeconds:** automatically close the popup after given seconds (e.g. '10')
 
-Demo: [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln).
+Demo: [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln)
