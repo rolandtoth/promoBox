@@ -64,7 +64,7 @@ var promoBox = function (o) {
             addStyles: function () {
                 var head = document.getElementsByTagName('head')[0],
                     styles = [
-                        '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
+                        '#promoContainer { position: fixed; width: 100%; height: 100%; box-sizing: border-box; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
                         '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #333; background: rgba(0, 0, 0, 0.6); pointer-events: all; }',
                         '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; max-height: 80%; z-index: 9992; pointer-events: all; }',
                         '#promoImage { max-width: 100%; max-height: 100%; height: auto; display: block; border: 8px solid #fff; border-radius: 4px; }',
