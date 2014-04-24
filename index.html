@@ -31,6 +31,7 @@
 //            endDate: 'May 20, 2014 19:27:00',
 //            daysToSeeAgain: 0.33,
             startCallback: 'hello',
+            clickCallback: 'clickHandler',
             closeCallback: 'bye',
             autoCloseSeconds: false
         });
@@ -46,14 +47,21 @@
     };
 
     function hello() {
-	    if (typeof console !== "undefined") {
-			console.log('promoBox has started...');
+	if (typeof console !== "undefined") {
+		console.log('promoBox has started...');
         }
     }
+    
+    function clickHandler() {
+	if (typeof console !== "undefined") {
+		console.log('promoBox image was clicked');
+        }
+    }
+    
     function bye() {
-		if (typeof console !== "undefined") {
-			console.log('promoBox terminated');
-		}
+	if (typeof console !== "undefined") {
+		console.log('promoBox terminated');
+	}
     }
     
 </script>
