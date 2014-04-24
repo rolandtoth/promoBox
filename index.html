@@ -20,20 +20,17 @@
             imagePath: 'bird.jpg',
             link: 'http://blog.rolandtoth.hu/post/82572422490/promobox-simple-javascript-promo-popup',
             target: '_blank',
-//            disableOverlay: true,
-//            disableOverlayClose: true,
-//            disableStyles: true,
-//            disableCloseButton: true,
-//            disableKeyClose: true,
-//            closeButtonText: '',
+            disableOverlay: false,
+            disableOverlayClose: false,
+            disableStyles: false,
+            disableCloseButton: false,
+            disableKeyClose: false,
+            closeButtonText: '',
 //            showOnHash: '#promo',
 //            startDate: 'April 12, 2014 02:30:00',
 //            endDate: 'May 20, 2014 19:27:00',
 //            daysToSeeAgain: 0.33,
-            startCallback: 'hello',
-            clickCallback: 'clickHandler',
-            closeCallback: 'bye',
-            autoCloseSeconds: false
+            autoCloseSeconds: 30
         });
     };
 
@@ -46,23 +43,23 @@
         return false;
     };
 
-    function hello() {
+    var promoBoxStart = function () {
 	if (typeof console !== "undefined") {
 		console.log('promoBox has started...');
         }
-    }
-    
-    function clickHandler() {
+    };
+	
+    var promoBoxClick = function () {
 	if (typeof console !== "undefined") {
 		console.log('promoBox image was clicked');
         }
-    }
-    
-    function bye() {
+    };
+	
+    var promoBoxClose = function () {
 	if (typeof console !== "undefined") {
 		console.log('promoBox terminated');
 	}
-    }
+    };
     
 </script>
 
