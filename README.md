@@ -20,6 +20,7 @@ Options
 * **endDate:** date until the popup should appear e.g.  'April 16, 2014 19:27:00')
 * **daysToSeeAgain:** period of days to show the popup again for a visitor (uses a cookie, e.g. '2')
 * **startCallback:** function name that is fired before showing the popup (string, e.g. 'beforePromo')
+* **clickCallback:** function name that is fired when clicking on the main image (string, e.g. 'clickHandler')
 * **closeCallback:** function name that is fired before showing the popup (string, e.g. 'afterPromo')
 * **autoCloseSeconds:** automatically close the popup after given seconds (e.g. '10')
 
