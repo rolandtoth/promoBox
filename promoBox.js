@@ -1,4 +1,4 @@
-var promoBox = function(o) {
+var promoBox = function (o) {
     'use strict';
     /*global window, document */
     /*jslint browser: true */
@@ -6,11 +6,12 @@ var promoBox = function(o) {
     var helpers, PB;
 
     helpers = {
-        cookie: {
-            createCookie: function(name, value, days) {
 
-                var expires = '',
-                        date;
+        cookie: {
+
+            createCookie: function (name, value, days) {
+
+                var expires = '', date;
 
                 if (days) {
                     date = new Date();
@@ -20,7 +21,8 @@ var promoBox = function(o) {
 
                 document.cookie = name + '=' + value + expires + '; path=/;';
             },
-            readCookie: function(name) {
+
+            readCookie: function (name) {
 
                 var nameEQ, ca, i, c;
 
@@ -39,23 +41,26 @@ var promoBox = function(o) {
 
                 return null;
             },
-            eraseCookie: function(name) {
+
+            eraseCookie: function (name) {
                 this.createCookie(name, '', -1);
             }
         },
-        addEvent: function(target, type, handler) {
+
+        addEvent: function (target, type, handler) {
             if (target.addEventListener) {
                 target.addEventListener(type, handler, false);
             } else {
-                target.attachEvent('on' + type, function(event) {
+                target.attachEvent('on' + type, function (event) {
                     return handler.call(target, event);
                 });
             }
         },
-        makeElement: function(tag, properties, text) {
+
+        makeElement: function (tag, properties, text) {
 
             var obj = document.createElement(tag),
-                    i;
+                i;
 
             for (i in properties) {
                 if (properties.hasOwnProperty(i)) {
@@ -69,7 +74,8 @@ var promoBox = function(o) {
 
             return obj;
         },
-        callCallBack: function(fx) {
+
+        callCallBack: function (fx) {
             if (typeof window[fx] === 'function') {
                 window[fx]();
             }
@@ -77,17 +83,18 @@ var promoBox = function(o) {
     };
 
     PB = {
+
         addStyles: function () {
 
             var head = document.getElementsByTagName('head')[0],
-                    styles = [
-                        '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
-                        '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #333; background: rgba(0, 0, 0, 0.6); pointer-events: all; }',
-                        '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
-                        '#promoImage { max-width: 100%; height: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
-                        '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 18px 20px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; }',
-                        '#promoClose:hover { opacity: 1; cursor: pointer; }'
-                    ].join('');
+                styles = [
+                    '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
+                    '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #333; background: rgba(0, 0, 0, 0.6); pointer-events: all; }',
+                    '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
+                    '#promoImage { max-width: 100%; height: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
+                    '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 18px 20px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; }',
+                    '#promoClose:hover { opacity: 1; cursor: pointer; }'
+                ].join('');
 
             if (this.promo.styles.styleSheet) {
                 this.promo.styles.styleSheet.cssText = styles;
@@ -101,6 +108,7 @@ var promoBox = function(o) {
                 head.appendChild(this.promo.styles);
             }
         },
+
         init: function () {
 
             var currentDateEpoch = Math.round(new Date().getTime() / 1000);
@@ -111,13 +119,11 @@ var promoBox = function(o) {
 
             if (o.deleteCookieOnHash && o.deleteCookieOnHash === document.location.hash) {
                 helpers.cookie.eraseCookie('promoBox');
-            } else {
-                if (o.daysToSeeAgain) {
-                    if (helpers.cookie.readCookie('promoBox')) {
-                        return false;
-                    }
-                    helpers.cookie.createCookie('promoBox', '1', o.daysToSeeAgain);
+            } else if (o.daysToSeeAgain) {
+                if (helpers.cookie.readCookie('promoBox')) {
+                    return false;
                 }
+                helpers.cookie.createCookie('promoBox', '1', o.daysToSeeAgain);
             }
 
             if (o.startDate) {
@@ -140,6 +146,7 @@ var promoBox = function(o) {
 
             return true;
         },
+
         buildPromo: function () {
 
             this.promo = {
@@ -165,6 +172,7 @@ var promoBox = function(o) {
 
             document.body.appendChild(this.promo.container);
         },
+
         addListeners: function () {
 
             if (!o.disableCloseButton) {
@@ -188,7 +196,9 @@ var promoBox = function(o) {
                 this.events.autoClose();
             }
         },
+
         events: {
+
             close: function () {
                 if (PB.promo.container) {
                     document.body.removeChild(PB.promo.container);
@@ -202,16 +212,19 @@ var promoBox = function(o) {
                 }
                 PB = null;
             },
+
             autoClose: function () {
                 this.autoCloseID = setTimeout(function () {
                     PB.events.close();
                 }, o.autoCloseSeconds * 1000);
             },
+
             keyClose: function () {
                 if (PB && event.keyCode === 27) {
                     PB.events.close();
                 }
             },
+
             addLink: function () {
                 helpers.callCallBack('promoBoxClick');
                 if (o.target === '') {
