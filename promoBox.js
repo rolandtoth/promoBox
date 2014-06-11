@@ -1,3 +1,12 @@
+/*!
+ * promoBox 1.0 - Simple JavaScript Promo Popup
+ * https://github.com/rolandtoth/promoBox
+ *
+ * Licensed under the MIT license.
+ * Copyright 2014 Roland Toth
+ *
+ */
+
 var promoBox = function (o) {
     'use strict';
     /*global window, document */
