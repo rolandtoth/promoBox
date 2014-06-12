@@ -1,5 +1,5 @@
 /*!
- * promoBox 1.0 - Simple JavaScript Promo Popup
+ * promoBox v1.0 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
  *
  * Licensed under the MIT license.
