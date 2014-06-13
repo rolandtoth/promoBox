@@ -1,5 +1,5 @@
 /*!
- * promoBox v1.1 - Simple JavaScript Promo Popup
+ * promoBox v1.2 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
  *
  * Licensed under the MIT license.
@@ -107,10 +107,18 @@ var promoBox = function (o) {
 
             if (o.fadeInDuration > 0) {
                 styles += [
-                    '#promoContainer { opacity: 0; -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's linear; animation: promoFadeIn ' + o.fadeInDuration + 's linear; }',
+                    '#promoContainer { opacity: 0; -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; }',
+                    '#promoContainer { -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }',
                     '@-webkit-keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
-                    '@keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
-                    '#promoContainer { -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }'
+                    '@keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }'
+                ].join('');
+            }
+
+            if (o.fadeOutDuration > 0) {
+                styles += [
+                    '#promoContainer.fadeOut { -webkit-animation: promoFadeOut ' + o.fadeOutDuration + 's ease-out; animation: promoFadeOut ' + o.fadeOutDuration + 's ease-out; }',
+                    '@-webkit-keyframes promoFadeOut { from {opacity: 1} to {opacity: 0} }',
+                    '@keyframes promoFadeOut { from {opacity: 1} to {opacity: 0} }'
                 ].join('');
             }
 
@@ -163,6 +171,7 @@ var promoBox = function (o) {
             }
 
             o.fadeInDuration = o.fadeInDuration || 0;
+            o.fadeOutDuration = o.fadeOutDuration || 0;
             o.loadDelay = o.loadDelay || 0;
 
             return true;
@@ -220,18 +229,41 @@ var promoBox = function (o) {
 
         events: {
 
-            close: function () {
+            destroyPromo: function () {
+
                 if (PB.promo.container) {
                     document.body.removeChild(PB.promo.container);
                 }
+
                 if (PB.promo.styles) {
                     PB.promo.styles.parentNode.removeChild(PB.promo.styles);
                 }
+
+                PB = null;
+            },
+
+            close: function () {
+
                 helpers.callCallBack('promoBoxClose');
+
+                if (PB.promo.container) {
+
+                    if (o.fadeOutDuration > 0) {
+
+                        PB.promo.container.className = 'fadeOut';
+
+                        setTimeout(function () {
+                            PB.events.destroyPromo();
+                        }, o.fadeOutDuration * 1000);
+
+                    } else {
+                        PB.events.destroyPromo();
+                    }
+                }
+
                 if (PB.events.autoCloseID) {
                     clearTimeout(PB.events.autoCloseID);
                 }
-                PB = null;
             },
 
             autoClose: function () {
@@ -247,15 +279,19 @@ var promoBox = function (o) {
             },
 
             addLink: function () {
+
                 helpers.callCallBack('promoBoxClick');
+
                 if (o.target === '') {
                     document.location = o.link;
                 } else {
                     window.open(o.link, o.target);
                 }
+
                 PB.events.close();
             }
         },
+
         startPromo: function () {
             helpers.callCallBack('promoBoxStart');
             PB.buildPromo();
