@@ -1,5 +1,5 @@
 /*!
- * promoBox v1.0 - Simple JavaScript Promo Popup
+ * promoBox v1.1 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
  *
  * Licensed under the MIT license.
@@ -98,12 +98,21 @@ var promoBox = function (o) {
             var head = document.getElementsByTagName('head')[0],
                 styles = [
                     '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
-                    '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #333; background: rgba(0, 0, 0, 0.6); pointer-events: all; }',
+                    '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #000; background: rgba(0, 0, 0, 0.6); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); pointer-events: all; }',
                     '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
                     '#promoImage { max-width: 100%; height: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
-                    '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 18px 20px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; }',
+                    '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; }',
                     '#promoClose:hover { opacity: 1; cursor: pointer; }'
                 ].join('');
+
+            if (o.fadeInDuration > 0) {
+                styles += [
+                    '#promoContainer { opacity: 0; -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's linear; animation: promoFadeIn ' + o.fadeInDuration + 's linear; }',
+                    '@-webkit-keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
+                    '@keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
+                    '#promoContainer { -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }'
+                ].join('');
+            }
 
             if (this.promo.styles.styleSheet) {
                 this.promo.styles.styleSheet.cssText = styles;
@@ -152,6 +161,9 @@ var promoBox = function (o) {
             if (o.showOnHash && o.showOnHash !== document.location.hash) {
                 return false;
             }
+
+            o.fadeInDuration = o.fadeInDuration || 0;
+            o.loadDelay = o.loadDelay || 0;
 
             return true;
         },
@@ -228,7 +240,7 @@ var promoBox = function (o) {
                 }, o.autoCloseSeconds * 1000);
             },
 
-            keyClose: function () {
+            keyClose: function (event) {
                 if (PB && event.keyCode === 27) {
                     PB.events.close();
                 }
@@ -243,15 +255,21 @@ var promoBox = function (o) {
                 }
                 PB.events.close();
             }
+        },
+        startPromo: function () {
+            helpers.callCallBack('promoBoxStart');
+            PB.buildPromo();
+            PB.addListeners();
+
+            if (!o.disableStyles) {
+                PB.addStyles();
+            }
         }
     };
 
     if (PB.init()) {
-        helpers.callCallBack('promoBoxStart');
-        PB.buildPromo();
-        PB.addListeners();
-        if (!o.disableStyles) {
-            PB.addStyles();
-        }
+        setTimeout(function () {
+            PB.startPromo();
+        }, o.loadDelay * 1000);
     }
 };
