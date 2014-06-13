@@ -20,6 +20,8 @@ Options
 * **endDate:** date until the popup should appear e.g.  'April 16, 2014 19:27:00')
 * **daysToSeeAgain:** period of days to show the popup again for a visitor (uses a cookie, e.g. '2')
 * **deleteCookieOnHash:** delete cookie set with 'daysToSeeAgain' if the current url contains the supplied hash (e.g. '#clear')
+* **fadeInDuration:** duration of fade-in effect in seconds (e.g. '0.7')
+* **loadDelay:** delay in seconds to display the lightbox (e.g. '2.5')
 * **autoCloseSeconds:** automatically close the popup after given seconds (e.g. '10')
 * **Callback functions:** 'promoBoxStart', 'promoBoxClick' and 'promoBoxClose' functions are automatically fired if they exist
 
