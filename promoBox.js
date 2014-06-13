@@ -1,5 +1,5 @@
 /*!
- * promoBox v1.2 - Simple JavaScript Promo Popup
+ * promoBox v1.1 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
  *
  * Licensed under the MIT license.
@@ -88,6 +88,12 @@ var promoBox = function (o) {
             if (typeof window[fx] === 'function') {
                 window[fx]();
             }
+        },
+
+        loadSprite: function (src, callback) {
+            var sprite = new Image();
+            sprite.onload = callback;
+            sprite.src = src;
         }
     };
 
@@ -304,8 +310,10 @@ var promoBox = function (o) {
     };
 
     if (PB.init()) {
-        setTimeout(function () {
-            PB.startPromo();
-        }, o.loadDelay * 1000);
+        helpers.loadSprite(o.imagePath, function () {
+            setTimeout(function () {
+                PB.startPromo();
+            }, o.loadDelay * 1000);
+        });
     }
 };
