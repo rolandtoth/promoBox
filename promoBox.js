@@ -103,7 +103,7 @@ var promoBox = function (o) {
 
             var head = document.getElementsByTagName('head')[0],
                 styles = [
-                    '#promoContainer { position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
+                    '#promoContainer { opacity: 0; position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
                     '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #000; background: rgba(0, 0, 0, 0.6); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); pointer-events: all; }',
                     '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
                     '#promoImage { max-width: 100%; height: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
@@ -113,11 +113,14 @@ var promoBox = function (o) {
 
             if (o.fadeInDuration > 0) {
                 styles += [
-                    '#promoContainer { opacity: 0; -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; }',
+                    '#promoContainer { -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; }',
                     '#promoContainer { -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }',
                     '@-webkit-keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
                     '@keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }'
                 ].join('');
+            } else {
+                // fix showing lightbox if fadeInDuration is 0
+                styles += '#promoContainer { opacity: 1 }';
             }
 
             if (o.fadeOutDuration > 0) {
