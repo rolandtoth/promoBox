@@ -1,6 +1,7 @@
 /*!
- * promoBox v1.1 - Simple JavaScript Promo Popup
+ * promoBox v1.2 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
+ * last update: 2014.06.16.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth
@@ -66,6 +67,10 @@ var promoBox = function (o) {
             }
         },
 
+        addClass: function (target, className) {
+            target.className += ' ' + className;
+        },
+
         makeElement: function (tag, properties, text) {
 
             var obj = document.createElement(tag),
@@ -111,10 +116,18 @@ var promoBox = function (o) {
                     '#promoClose:hover { opacity: 1; cursor: pointer; }'
                 ].join('');
 
+            if (o.interstitialDuration) {
+                styles += [
+                    '#promoOverlay { background: #fff; }',
+                    '#interstitialText { z-index: 9998; position: relative; pointer-events: all; }',
+                    '#interstitialSkipText { text-decoration: underline; color: inherit; }',
+                    '#promoImage { border: none; }'
+                ].join('');
+            }
+
             if (o.fadeInDuration > 0) {
                 styles += [
-                    '#promoContainer { -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; }',
-                    '#promoContainer { -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }',
+                    '#promoContainer { -webkit-animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; animation: promoFadeIn ' + o.fadeInDuration + 's ease-in; -webkit-animation-fill-mode: forwards; animation-fill-mode: forwards; }',
                     '@-webkit-keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }',
                     '@keyframes promoFadeIn { from {opacity: 0} to {opacity: 1} }'
                 ].join('');
@@ -148,6 +161,10 @@ var promoBox = function (o) {
 
             var currentDateEpoch = Math.round(new Date().getTime() / 1000);
 
+            o.fadeInDuration = o.fadeInDuration || 0;
+            o.fadeOutDuration = o.fadeOutDuration || 0;
+            o.loadDelay = o.loadDelay || 0;
+
             if (!o.imagePath) {
                 return false;
             }
@@ -179,9 +196,14 @@ var promoBox = function (o) {
                 return false;
             }
 
-            o.fadeInDuration = o.fadeInDuration || 0;
-            o.fadeOutDuration = o.fadeOutDuration || 0;
-            o.loadDelay = o.loadDelay || 0;
+            if (o.interstitialDuration) {
+                o.disableOverlay = false;
+                o.disableOverlayClose = true;
+                o.disableCloseButton = true;
+                o.disableKeyClose = true;
+                o.closeButtonText = null;
+                o.autoCloseSeconds = o.interstitialDuration;
+            }
 
             return true;
         },
@@ -193,9 +215,25 @@ var promoBox = function (o) {
                 container: helpers.makeElement('div', {id: 'promoContainer'}),
                 content: helpers.makeElement('div', {id: 'promoContent'}),
                 image: helpers.makeElement('img', {id: 'promoImage', src: o.imagePath}),
-                close: helpers.makeElement('a', {id: 'promoClose'}, o.closeButtonText || '×'),
+                close: helpers.makeElement('a', {id: 'promoClose', href: '#'}, o.closeButtonText || '×'),
                 styles: o.disableStyles ? null : helpers.makeElement('style', {id: 'promoStyle', type: 'text/css'})
             };
+
+            if (o.interstitialDuration) {
+
+                this.promo.interstitialCounter = '<span id="interstitialCounter">' + o.interstitialDuration + '</span>';
+
+                o.interstitialSkipText = o.interstitialSkipText || 'Skip this ad';
+                o.interstitialText = (o.interstitialText || 'or wait %s seconds').replace('%s', this.promo.interstitialCounter);
+
+                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, ' ' + o.interstitialText);
+                this.promo.interstitialSkipText = helpers.makeElement('a', {id: 'interstitialSkipText', href: '#'}, o.interstitialSkipText + ' ');
+
+                this.promo.interstitialText.insertBefore(this.promo.interstitialSkipText, this.promo.interstitialText.firstChild);
+                this.promo.container.appendChild(this.promo.interstitialText);
+
+                helpers.addClass(this.promo.container, 'interstitial');
+            }
 
             this.promo.content.appendChild(this.promo.image);
 
@@ -231,6 +269,18 @@ var promoBox = function (o) {
                 helpers.addEvent(document, 'keydown', this.events.keyClose);
             }
 
+            if (o.interstitialDuration) {
+                helpers.addEvent(this.promo.interstitialSkipText, 'click', this.events.close);
+                this.interstitialCloseID = setInterval(function () {
+                    var counter = document.getElementById('interstitialCounter');
+                    if (counter && counter.innerHTML > 0) {
+                        counter.innerHTML = counter.innerHTML - 1;
+                    } else {
+                        return false;
+                    }
+                }, 1000);
+            }
+
             if (o.autoCloseSeconds) {
                 this.events.autoClose();
             }
@@ -251,7 +301,15 @@ var promoBox = function (o) {
                 PB = null;
             },
 
-            close: function () {
+            close: function (event) {
+
+                if (event) {
+                    event.preventDefault();
+                }
+
+                if (!PB) {
+                    return false;
+                }
 
                 helpers.callCallBack('promoBoxClose');
 
@@ -259,7 +317,7 @@ var promoBox = function (o) {
 
                     if (o.fadeOutDuration > 0) {
 
-                        PB.promo.container.className = 'fadeOut';
+                        helpers.addClass(PB.promo.container, 'fadeOut');
 
                         setTimeout(function () {
                             PB.events.destroyPromo();
@@ -272,6 +330,10 @@ var promoBox = function (o) {
 
                 if (PB.events.autoCloseID) {
                     clearTimeout(PB.events.autoCloseID);
+                }
+
+                if (PB.events.interstitialCloseID) {
+                    clearTimeout(PB.events.interstitialCloseID);
                 }
             },
 
