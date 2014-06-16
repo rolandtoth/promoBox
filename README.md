@@ -23,6 +23,9 @@ Options
 * **fadeInDuration:** duration of fade-in effect in seconds (e.g. '0.7')
 * **fadeOutDuration:** duration of fade-out effect in seconds (e.g. '0.7')
 * **loadDelay:** delay in seconds to display the lightbox (e.g. '2.5')
+* **interstitialDuration:** if set greater than 0 an interstitial will be shown with a countdown timer (seconds, e.g. '30')
+* **interstitialSkipText:** text of the link to close the interstitial (default is 'Skip this ad')
+* **interstitialText:** text of the interstitial (default is 'or wait %s seconds' where %s is the value of interstitialDuration)
 * **autoCloseSeconds:** automatically close the popup after given seconds (e.g. '10')
 * **Callback functions:** 'promoBoxStart', 'promoBoxClick' and 'promoBoxClose' functions are automatically fired if they exist
 
