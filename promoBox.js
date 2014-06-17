@@ -13,7 +13,7 @@ var promoBox = function (o) {
     /*global window, document */
     /*jslint browser: true */
 
-    var helpers, PB;
+    var helpers, PB, autoCloseID, interstitialCloseID;
 
     helpers = {
 
@@ -271,7 +271,7 @@ var promoBox = function (o) {
 
             if (o.interstitialDuration) {
                 helpers.addEvent(this.promo.interstitialSkipText, 'click', this.events.close);
-                o.interstitialCloseID = setInterval(function () {
+                interstitialCloseID = setInterval(function () {
                     var counter = document.getElementById('interstitialCounter');
                     if (counter && counter.innerHTML > 0) {
                         counter.innerHTML = counter.innerHTML - 1;
@@ -328,17 +328,17 @@ var promoBox = function (o) {
                     }
                 }
 
-                if (o.autoCloseID) {
-                    clearTimeout(o.autoCloseID);
+                if (autoCloseID) {
+                    clearTimeout(autoCloseID);
                 }
 
-                if (o.interstitialCloseID) {
-                    clearInterval(o.interstitialCloseID);
+                if (interstitialCloseID) {
+                    clearInterval(interstitialCloseID);
                 }
             },
 
             autoClose: function () {
-                o.autoCloseID = setTimeout(function () {
+                autoCloseID = setTimeout(function () {
                     PB.events.close();
                 }, o.autoCloseSeconds * 1000);
             },
