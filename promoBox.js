@@ -271,7 +271,7 @@ var promoBox = function (o) {
 
             if (o.interstitialDuration) {
                 helpers.addEvent(this.promo.interstitialSkipText, 'click', this.events.close);
-                this.interstitialCloseID = setInterval(function () {
+                o.interstitialCloseID = setInterval(function () {
                     var counter = document.getElementById('interstitialCounter');
                     if (counter && counter.innerHTML > 0) {
                         counter.innerHTML = counter.innerHTML - 1;
@@ -328,17 +328,17 @@ var promoBox = function (o) {
                     }
                 }
 
-                if (PB.events.autoCloseID) {
-                    clearTimeout(PB.events.autoCloseID);
+                if (o.autoCloseID) {
+                    clearTimeout(o.autoCloseID);
                 }
 
-                if (PB.events.interstitialCloseID) {
-                    clearInterval(PB.events.interstitialCloseID);
+                if (o.interstitialCloseID) {
+                    clearInterval(o.interstitialCloseID);
                 }
             },
 
             autoClose: function () {
-                this.autoCloseID = setTimeout(function () {
+                o.autoCloseID = setTimeout(function () {
                     PB.events.close();
                 }, o.autoCloseSeconds * 1000);
             },
