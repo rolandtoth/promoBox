@@ -226,8 +226,8 @@ var promoBox = function (o) {
                 o.interstitialSkipText = o.interstitialSkipText || 'Skip this ad';
                 o.interstitialText = (o.interstitialText || 'or wait %s seconds').replace('%s', this.promo.interstitialCounter);
 
-                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, ' ' + o.interstitialText);
-                this.promo.interstitialSkipText = helpers.makeElement('a', {id: 'interstitialSkipText', href: '#'}, o.interstitialSkipText + ' ');
+                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, o.interstitialText);
+                this.promo.interstitialSkipText = helpers.makeElement('a', {id: 'interstitialSkipText', href: '#'}, ' ' + o.interstitialSkipText);
 
                 this.promo.interstitialText.insertBefore(this.promo.interstitialSkipText, this.promo.interstitialText.firstChild);
                 this.promo.container.appendChild(this.promo.interstitialText);
