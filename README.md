@@ -3,6 +3,11 @@ promoBox
 
 JavaScript function to show promo image popup
 
+Compability
+-----------
+* IE8+ (without some CSS3 animations)
+* modern browsers
+
 Options
 -----------
 
