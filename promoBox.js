@@ -1,7 +1,7 @@
 /*!
- * promoBox v1.2 - Simple JavaScript Promo Popup
+ * promoBox v1.3 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
- * last update: 2014.06.16.
+ * last update: 2014.06.19.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth
@@ -13,7 +13,8 @@ var promoBox = function (o) {
     /*global window, document */
     /*jslint browser: true */
 
-    var helpers, PB, autoCloseID, interstitialCloseID;
+    var helpers, PB, autoCloseID, interstitialCloseID,
+        currentURL = window.location.href;
 
     helpers = {
 
@@ -99,6 +100,21 @@ var promoBox = function (o) {
             var sprite = new Image();
             sprite.onload = callback;
             sprite.src = src;
+        },
+
+        findInArray: function (search, where, exactMatch) {
+
+            var i;
+
+            search = (typeof search === 'string') ? [search] : search;
+
+            for (i = 0; i < search.length; i = i + 1) {
+                if ((exactMatch && search[i] === where) || (!exactMatch && where.indexOf(search[i]) !== -1)) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     };
 
@@ -111,15 +127,15 @@ var promoBox = function (o) {
                     '#promoContainer { opacity: 0; position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
                     '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #000; background: rgba(0, 0, 0, 0.6); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); pointer-events: all; }',
                     '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
-                    '#promoImage { max-width: 100%; height: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
+                    '#promoImage { max-width: 100%; height: auto; width: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
                     '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; text-decoration: none; }',
                     '#promoClose:hover { opacity: 1; cursor: pointer; }'
                 ].join('');
 
             if (o.interstitialDuration) {
                 styles += [
-                    '#promoOverlay { background: #fff; }',
-                    '#interstitialText { z-index: 9998; position: relative; pointer-events: all; }',
+                    '#promoOverlay { background: #fff; -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=100)"; filter: alpha(opacity=100);}',
+                    '#interstitialText { z-index: 9998; position: fixed; top: 0; left: 0; width: 100%; pointer-events: all; }',
                     '#interstitialSkipText { text-decoration: underline; color: inherit; }',
                     '#promoImage { border: none; }'
                 ].join('');
@@ -169,7 +185,7 @@ var promoBox = function (o) {
                 return false;
             }
 
-            if (o.deleteCookieOnHash && o.deleteCookieOnHash === document.location.hash) {
+            if (o.deleteCookieOnHash && helpers.findInArray(o.deleteCookieOnHash, document.location.hash, true)) {
                 helpers.cookie.eraseCookie('promoBox');
             } else if (o.daysToSeeAgain) {
                 if (helpers.cookie.readCookie('promoBox')) {
@@ -192,7 +208,15 @@ var promoBox = function (o) {
                 }
             }
 
-            if (o.showOnHash && o.showOnHash !== document.location.hash) {
+            if (o.showIfUrlContains && !helpers.findInArray(o.showIfUrlContains, currentURL, false)) {
+                return false;
+            }
+
+            if (o.hideIfUrlContains && helpers.findInArray(o.hideIfUrlContains, currentURL, false)) {
+                return false;
+            }
+
+            if (o.showOnHash && !helpers.findInArray(o.showOnHash, document.location.hash, true)) {
                 return false;
             }
 
@@ -226,8 +250,11 @@ var promoBox = function (o) {
                 o.interstitialSkipText = o.interstitialSkipText || 'Skip this ad';
                 o.interstitialText = (o.interstitialText || 'or wait %s seconds').replace('%s', this.promo.interstitialCounter);
 
-                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, ' ' + o.interstitialText);
-                this.promo.interstitialSkipText = helpers.makeElement('a', {id: 'interstitialSkipText', href: '#'}, o.interstitialSkipText);
+                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, '&nbsp;' + o.interstitialText);
+                this.promo.interstitialSkipText = helpers.makeElement('a', {
+                    id: 'interstitialSkipText',
+                    href: '#'
+                }, o.interstitialSkipText);
 
                 this.promo.interstitialText.insertBefore(this.promo.interstitialSkipText, this.promo.interstitialText.firstChild);
                 this.promo.container.appendChild(this.promo.interstitialText);
@@ -304,7 +331,11 @@ var promoBox = function (o) {
             close: function (event) {
 
                 if (event) {
-                    event.preventDefault();
+                    if (event.preventDefault) {
+                        event.preventDefault();
+                    } else {
+                        event.returnValue = false;
+                    }
                 }
 
                 if (!PB) {
@@ -382,3 +413,18 @@ var promoBox = function (o) {
         });
     }
 };
+
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (obj, start) {
+        'use strict';
+        var i = (start || 0),
+            j = this.length;
+
+        for (i; i < j; i = i + 1) {
+            if (this[i] === obj) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
