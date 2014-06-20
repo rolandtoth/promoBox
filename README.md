@@ -105,7 +105,9 @@ Custom text for the close button (e.g. `Close popup`)
 **showOnHash**
 
 Show the popup only if the current url has a given hash (e.g. `#promo`).
+
 Add multiple values as an array (e.g. `["#demo", "#test"]`).
+
 Only exact matches count.
 
 
@@ -187,6 +189,6 @@ Automatically close the popup after given seconds (e.g. `10`)
 
 
 **Callback functions**
-* `promoBoxStart` is fired when promoBox is started
-* `promoBoxClose` is fired when promoBox is closed
-* `promoBoxClick` is fired when the main image or action buttons are clicked
+* `promoBoxStart` when promoBox is starting
+* `promoBoxClose` when promoBox is closing
+* `promoBoxClick` when the main image or action buttons are clicked
