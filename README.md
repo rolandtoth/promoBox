@@ -105,9 +105,7 @@ Custom text for the close button (e.g. `Close popup`)
 **showOnHash**
 
 Show the popup only if the current url has a given hash (e.g. `#promo`).
-
 Add multiple values as an array (e.g. `["#demo", "#test"]`).
-
 Only exact matches count.
 
 
@@ -118,7 +116,7 @@ Date from the popup should appear (e.g. `April 12, 2014 02:30:00`)
 
 **endDate**
 
-Date until the popup should appear e.g. `April 16, 2014 19:27:00`)
+Date until the popup should appear (e.g. `April 16, 2014 19:27:00`)
 
 
 **daysToSeeAgain**
