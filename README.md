@@ -22,7 +22,7 @@ Features
 
 **Demo**: [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln)
 
-Compability
+Compatibility
 -----------
 * IE8+ (without some CSS3 animations)
 * modern browsers
