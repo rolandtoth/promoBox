@@ -30,42 +30,39 @@ Compability
 Options
 -----------
 
-**imagePath**
+<dl>
+  <dt>imagePath</dt>
+  <dd>Absolute or relative path to the image to display (**required**)</dd>
 
-Absolute or relative path to the image to display (**required**)
+  <dt>link</dt>
+  <dd>Url to visit when clicking on the main image.</dd>
+
+  <dt>target</dt>
+  <dd>Target of the main image (e.g. `_blank`)</dd>
+  
+  <dt>actionButtons</dt>
+  <dd>
+  Array of buttons to add to the lightbox.
+  
+  Four option can be set per button: button text, link, target and classes.
+  
+  If only button text is supplied the button will close the promoBox.
+  
+  Example:
+  
+  ```javascript
+  actionButtons: [
+      ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
+      ['Jump to anchor', '#anchor', '', 'jumpLink'],
+      ['Cancel']
+  ]
+  ```
+  
+  </dd>
+    
+</dl>
 
 
-**link**
-
-URL to visit when clicking on the main image
-
-
-**target**
-
-Target of the main image (e.g. `_blank`)
-
-
-**actionButtons**
-
-Array of buttons to add to the lightbox.
-
-Four option can be set per button:
-* button text
-* button link
-* link target
-* classes
-
-If only button text is supplied the button will close the promoBox.
-
-Example:
-
-```javascript
-actionButtons: [
-    ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
-    ['Jump to anchor', '#anchor', '', 'jumpLink'],
-    ['Cancel']
-]
-```
 
 **className**
 
