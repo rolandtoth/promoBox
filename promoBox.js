@@ -156,7 +156,7 @@ var promoBox = function (o) {
                     '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; text-decoration: none; }',
                     '#promoClose:hover { opacity: 1; cursor: pointer; }',
                     '#promoButtons { position: absolute; bottom: 0; width: 100%; padding: 24px 0; }',
-                    '#promoButtons a { display: inline-block; padding: 4px 16px; background: #fff; border: 1px solid #ddd; min-width: 60px; text-align: center; margin: 0 6px; color: #000; }'
+                    '#promoButtons a { display: inline-block; text-decoration: none; padding: 5px 16px; background: #fff; text-align: center; margin: 0 6px; color: #000; }'
                 ].join('');
 
             if (o.interstitialDuration) {
