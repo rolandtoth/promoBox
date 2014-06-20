@@ -42,12 +42,12 @@ URL to visit when clicking on the main image
 
 **target**
 
-Target of the main image (e.g. `_blank`)
+Target of the main image link (e.g. `_blank`)
 
 
 **actionButtons**
 
-Array of buttons to add to the lightbox.
+Buttons to add to the lightbox.
 
 Four option can be set per button:
 * button text
@@ -58,7 +58,6 @@ Four option can be set per button:
 If only button text is supplied the button will close the promoBox.
 
 Example:
-
 ```javascript
 actionButtons: [
     ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
