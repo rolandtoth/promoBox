@@ -1,7 +1,7 @@
 promoBox
 ========
 
-JavaScript function to show promo image popup
+JavaScript function to show promo image popup.
 
 
 Features
@@ -12,12 +12,12 @@ Features
 * set start/end date of showing the popup
 * set number of days after the popup should be shown again
 * specify urls or hashes to show or hide the popup
-* autoclose after given seconds
 * interstitial feature with countdown timer and skip link
+* autoclose after given seconds
 * delayed start
 * easy deployment: one JavaScript file, no library needed
 * custom CSS classes for easy styling
-* localization: all texts are configurable
+* localization: all texts configurable
 * callback functions on start, button click and close
 
 **Demo**: [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln)
@@ -32,7 +32,7 @@ Options
 
 **imagePath**
 
-Absolute or relative path to the image to display (required)
+Absolute or relative path to the image to display (**required**)
 
 
 **link**
