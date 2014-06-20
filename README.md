@@ -2,6 +2,24 @@ promoBox
 ========
 
 JavaScript function to show promo image popup
+
+
+Features
+-----------
+
+* show a popup image in a lightbox when the page loads
+* add buttons to the lightbox with custom text, link and target
+* set start/end date of showing the popup
+* set number of days after the popup should be shown again
+* specify urls or hashes to show or hide the popup
+* autoclose after given seconds
+* interstitial feature with countdown timer and skip link
+* delayed start
+* easy deployment: one JavaScript file, no library needed
+* custom CSS classes for easy styling
+* localization: all texts are configurable
+* callback functions on start, button click and close
+
 **Demo**: [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln)
 
 Compability
@@ -14,33 +32,30 @@ Options
 
 **imagePath**
 
-Absolute or full path to the image to display (required)
+Absolute or relative path to the image to display (required)
 
 
 **link**
 
-url to visit when clicking on the image
+URL to visit when clicking on the main image
 
 
 **target**
 
-link target (e.g. `_blank`)
+Target of the main image (e.g. `_blank`)
 
 
 **actionButtons**
 
 Array of buttons to add to the lightbox.
 
-Accepts four items per button:
+Four option can be set per button:
 * button text
 * button link
 * link target
 * classes
 
 If only button text is supplied the button will close the promoBox.
-
-Use `#closePromo` as button link to close promoBox on click.
-
 
 Example:
 
@@ -52,6 +67,10 @@ actionButtons: [
 ]
 ```
 
+**className**
+
+Custom class(es) to add the the promoBox container (e.g. `myPromo`)
+
 **disableOverlay**
 
 Whether to show the overlay background (`true` or `false`)
@@ -59,7 +78,7 @@ Whether to show the overlay background (`true` or `false`)
 
 **disableOverlayClose**
 
-Whether to enable closing the lightbox clicking on the overlay (`true` or `false`)
+Whether to enable closing promoBox by clicking on the overlay (`true` or `false`)
 
 
 **disableStyles**
@@ -73,7 +92,7 @@ Whether to show the close button in the top-right corner (`true` or `false`)
 
 
 **disableKeyClose**
-Whether to disable closing the lightbox with the ESC key (`true` or `false`)
+Whether to disable closing promoBox with the ESC key (`true` or `false`)
 
 
 **closeButtonText**
@@ -84,23 +103,25 @@ Custom text for the close button (e.g. `Close popup`)
 **showOnHash**
 
 Show the popup only if the current url has a given hash (e.g. `#promo`).
-Add multiple values as an array (e.g. '["#demo", "#test"]').
+
+Add multiple values as an array (e.g. `["#demo", "#test"]`).
+
 Only exact matches count.
 
 
 **startDate**
 
-Date from the popup should appear (e.g. 'April 12, 2014 02:30:00')
+Date from the popup should appear (e.g. `April 12, 2014 02:30:00`)
 
 
 **endDate**
 
-Date until the popup should appear e.g.  'April 16, 2014 19:27:00')
+Date until the popup should appear e.g. `April 16, 2014 19:27:00`)
 
 
 **daysToSeeAgain**
 
-Period of days to show the popup again for a visitor (uses a cookie, e.g. '2')
+Number of days to show the popup again for a visitor (uses a cookie, e.g. `2`)
 
 
 **deleteCookieOnHash**
@@ -108,19 +129,26 @@ Period of days to show the popup again for a visitor (uses a cookie, e.g. '2')
 Delete cookie set with 'daysToSeeAgain' if the current url has the supplied hash (e.g. `#clear`). 
 
 Add multiple values as an array (e.g. `["#clear", "#test"]`).
+
 Only exact matches count.
 
 
 **showIfUrlContains**
 
-Show the lightbox only if the current url contains the supplied string (e.g. '/products/', partial match).
+Show promoBox only if the current url contains the supplied string (e.g. `/products/`).
+
 Add multiple values as an array (e.g. `["promotion", "freebies/docs"]`).
+
+Partial matches are allowed.
 
 
 **hideIfUrlContains** 
 
-Show the lightbox only if the current url does not contain the supplied string (e.g. 'profile', partial match).
+Show promoBox only if the current url does not contain the supplied string (e.g. `profile`).
+
 Add multiple values as an array (e.g. `["dev.mysite", "mysite.com/about-us"]`).
+
+Partial matches are allowed.
 
 
 **fadeInDuration**
@@ -135,7 +163,7 @@ Duration of fade-out effect in seconds (e.g. `0.7`)
 
 **loadDelay**
 
-Delay in seconds to display the lightbox (e.g. `2.5`)
+Delay in seconds to display promoBox (e.g. `2.5`)
 
 
 **interstitialDuration**
