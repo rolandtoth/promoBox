@@ -66,9 +66,11 @@ actionButtons: [
 ]
 ```
 
+
 **className**
 
-Custom class(es) to add the the promoBox container (e.g. `myPromo`)
+Custom class(es) to add the the promoBox container (e.g. `myPromo` or `myPromo container`)
+
 
 **disableOverlay**
 
@@ -91,6 +93,7 @@ Whether to show the close button in the top-right corner (`true` or `false`)
 
 
 **disableKeyClose**
+
 Whether to disable closing promoBox with the ESC key (`true` or `false`)
 
 

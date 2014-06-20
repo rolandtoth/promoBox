@@ -1,12 +1,27 @@
 /*!
- * promoBox v1.3 - Simple JavaScript Promo Popup
+ * promoBox v1.4 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
- * last update: 2014.06.19.
+ * last update: 2014.06.20.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth
  *
  */
+
+if (!Array.prototype.indexOf) {
+    Array.prototype.indexOf = function (obj, start) {
+        'use strict';
+        var i = (start || 0),
+            j = this.length;
+
+        for (i; i < j; i = i + 1) {
+            if (this[i] === obj) {
+                return i;
+            }
+        }
+        return -1;
+    };
+}
 
 var promoBox = function (o) {
     'use strict';
@@ -79,7 +94,9 @@ var promoBox = function (o) {
 
             for (i in properties) {
                 if (properties.hasOwnProperty(i)) {
-                    obj.setAttribute(i, properties[i]);
+                    if (properties[i]) {
+                        obj.setAttribute(i, properties[i]);
+                    }
                 }
             }
 
@@ -115,6 +132,14 @@ var promoBox = function (o) {
             }
 
             return false;
+        },
+
+        preventDefault: function (event) {
+            if (event.preventDefault) {
+                event.preventDefault();
+            } else {
+                event.returnValue = false;
+            }
         }
     };
 
@@ -129,7 +154,9 @@ var promoBox = function (o) {
                     '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
                     '#promoImage { max-width: 100%; height: auto; width: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
                     '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; text-decoration: none; }',
-                    '#promoClose:hover { opacity: 1; cursor: pointer; }'
+                    '#promoClose:hover { opacity: 1; cursor: pointer; }',
+                    '#promoButtons { position: absolute; bottom: 0; width: 100%; padding: 24px 0; }',
+                    '#promoButtons a { display: inline-block; padding: 4px 16px; background: #fff; border: 1px solid #ddd; min-width: 60px; text-align: center; margin: 0 6px; color: #000; }'
                 ].join('');
 
             if (o.interstitialDuration) {
@@ -180,6 +207,7 @@ var promoBox = function (o) {
             o.fadeInDuration = o.fadeInDuration || 0;
             o.fadeOutDuration = o.fadeOutDuration || 0;
             o.loadDelay = o.loadDelay || 0;
+            o.target = o.target || '_self';
 
             if (!o.imagePath) {
                 return false;
@@ -234,12 +262,15 @@ var promoBox = function (o) {
 
         buildPromo: function () {
 
+            var i = 0;
+
             this.promo = {
                 overlay: helpers.makeElement('div', {id: 'promoOverlay'}),
                 container: helpers.makeElement('div', {id: 'promoContainer'}),
                 content: helpers.makeElement('div', {id: 'promoContent'}),
                 image: helpers.makeElement('img', {id: 'promoImage', src: o.imagePath}),
                 close: helpers.makeElement('a', {id: 'promoClose', href: '#'}, o.closeButtonText || '×'),
+                buttons: helpers.makeElement('div', {id: 'promoButtons'}),
                 styles: o.disableStyles ? null : helpers.makeElement('style', {id: 'promoStyle', type: 'text/css'})
             };
 
@@ -272,12 +303,39 @@ var promoBox = function (o) {
                 this.promo.content.appendChild(this.promo.close);
             }
 
+            if (o.actionButtons && o.actionButtons.length) {
+
+                for (i = 0; i < o.actionButtons.length; i = i + 1) {
+                    this.promo.buttons.appendChild(
+                        helpers.makeElement('a',
+                            {
+                                'href': o.actionButtons[i][1] || '#promoClose',
+                                'target': o.actionButtons[i][2] || '',
+                                'class': o.actionButtons[i][3] || ''
+                            },
+                            o.actionButtons[i][0])
+                    );
+                }
+
+                this.promo.content.appendChild(this.promo.buttons);
+            }
+
+            if (o.className) {
+                helpers.addClass(this.promo.container, o.className);
+            }
+
             this.promo.container.appendChild(this.promo.content);
 
             document.body.appendChild(this.promo.container);
         },
 
         addListeners: function () {
+
+            var i,
+                promoButtons = document.getElementById('promoButtons'),
+                setEventProperties = function (event) {
+                    return PB.events.openLink(event, this.href || '#promoClose', this.target || '_self');
+                };
 
             if (!o.disableCloseButton) {
                 helpers.addEvent(this.promo.close, 'click', this.events.close);
@@ -287,8 +345,16 @@ var promoBox = function (o) {
                 helpers.addEvent(this.promo.overlay, 'click', this.events.close);
             }
 
+            if (promoButtons && promoButtons.childNodes) {
+                for (i = 0; i < promoButtons.childNodes.length; i = i + 1) {
+                    helpers.addEvent(promoButtons.childNodes[i], 'click', setEventProperties);
+                }
+            }
+
             if (o.link) {
-                helpers.addEvent(this.promo.image, 'click', this.events.addLink);
+                helpers.addEvent(this.promo.image, 'click', function (event) {
+                    PB.events.openLink(event, o.link, o.target);
+                });
                 this.promo.image.style.cursor = 'pointer';
             }
 
@@ -331,11 +397,7 @@ var promoBox = function (o) {
             close: function (event) {
 
                 if (event) {
-                    if (event.preventDefault) {
-                        event.preventDefault();
-                    } else {
-                        event.returnValue = false;
-                    }
+                    helpers.preventDefault(event);
                 }
 
                 if (!PB) {
@@ -380,14 +442,16 @@ var promoBox = function (o) {
                 }
             },
 
-            addLink: function () {
+            openLink: function (event, link, target) {
+
+                if (event) {
+                    helpers.preventDefault(event);
+                }
 
                 helpers.callCallBack('promoBoxClick');
 
-                if (o.target === '') {
-                    document.location = o.link;
-                } else {
-                    window.open(o.link, o.target);
+                if (link.indexOf('#promoClose') === -1) {
+                    window.open(link, target);
                 }
 
                 PB.events.close();
@@ -413,18 +477,3 @@ var promoBox = function (o) {
         });
     }
 };
-
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (obj, start) {
-        'use strict';
-        var i = (start || 0),
-            j = this.length;
-
-        for (i; i < j; i = i + 1) {
-            if (this[i] === obj) {
-                return i;
-            }
-        }
-        return -1;
-    };
-}
