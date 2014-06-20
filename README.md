@@ -40,29 +40,24 @@ Options
   <dt>target</dt>
   <dd>Target of the main image (e.g. `_blank`)</dd>
   
+<dl>
+
   <dt>actionButtons</dt>
-  <dd>
-  Array of buttons to add to the lightbox.
+  <dd>Array of buttons to add to the lightbox.</dd>
+  <dd>Four option can be set per button: button text, link, target and classes.</dd>
+  <dd>If only button text is supplied the button will close the promoBox.</dd>
   
-  Four option can be set per button: button text, link, target and classes.
-  
-  If only button text is supplied the button will close the promoBox.
-  
-  Example:
-  
-  ```javascript
-  actionButtons: [
-      ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
-      ['Jump to anchor', '#anchor', '', 'jumpLink'],
-      ['Cancel']
-  ]
-  ```
-  
-  </dd>
+  <dd>Example:</dd>
     
 </dl>
 
-
+```javascript
+actionButtons: [
+    ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
+    ['Jump to anchor', '#anchor', '', 'jumpLink'],
+    ['Cancel']
+]
+```
 
 **className**
 
