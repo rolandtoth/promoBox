@@ -16,7 +16,7 @@ Features
 * autoclose after given seconds
 * delayed start
 * easy deployment: one JavaScript file, no library needed
-* custom CSS classes for easy styling
+* easy styling: custom CSS classes
 * localization: all texts configurable
 * callback functions on start, button click and close
 
