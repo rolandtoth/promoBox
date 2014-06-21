@@ -68,7 +68,7 @@ actionButtons: [
 
 **className**
 
-Custom class(es) to add the the promoBox container (e.g. `myPromo` or `myPromo container`)
+Custom class(es) to add to the promoBox container (e.g. `myPromo` or `myPromo container`)
 
 
 **disableOverlay**
