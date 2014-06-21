@@ -23,7 +23,7 @@ if (!Array.prototype.indexOf) {
     };
 }
 
-var promoBox = promoBox || function (o) {
+var promoBox = function (o) {
         'use strict';
         /*global window, document */
         /*jslint browser: true */
