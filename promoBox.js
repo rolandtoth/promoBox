@@ -23,7 +23,8 @@ if (!Array.prototype.indexOf) {
     };
 }
 
-var promoBox = function (o) {
+var promoBoxInstanceID,
+    promoBox = function (o) {
         'use strict';
         /*global window, document */
         /*jslint browser: true */
@@ -313,7 +314,13 @@ var promoBox = function (o) {
                     helpers.addClass(this.promo.container, 'interstitial');
                 }
 
-                this.promo.content.appendChild(this.promo.image);
+                if (o.link) {
+                    this.promo.link = helpers.makeElement('a', {id: 'promoLink', href: o.link, target: o.target});
+                    this.promo.content.appendChild(this.promo.link);
+                    this.promo.link.appendChild(this.promo.image);
+                } else {
+                    this.promo.content.appendChild(this.promo.image);
+                }
 
                 if (!o.disableOverlay) {
                     this.promo.container.appendChild(this.promo.overlay);
@@ -372,10 +379,9 @@ var promoBox = function (o) {
                 }
 
                 if (o.link) {
-                    helpers.addEvent(this.promo.image, 'click', function (event) {
+                    helpers.addEvent(this.promo.link, 'click', function (event) {
                         PB.events.openLink(event, o.link, o.target);
                     });
-                    this.promo.image.style.cursor = 'pointer';
                 }
 
                 if (!o.disableKeyClose) {
@@ -490,10 +496,15 @@ var promoBox = function (o) {
         };
 
         if (PB.init()) {
+
             helpers.loadSprite(o.imagePath, function () {
-                setTimeout(function () {
+
+                clearTimeout(promoBoxInstanceID);
+
+                promoBoxInstanceID = setTimeout(function () {
                     PB.startPromo();
                 }, o.loadDelay * 1000);
+
             });
         }
     };

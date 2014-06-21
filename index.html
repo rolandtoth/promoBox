@@ -4,72 +4,146 @@
     <title>promoBox example</title>
     <meta charset="utf-8">
     <script src="promoBox.js" type="text/javascript"></script>
+
+    <style type="text/css">
+        /* demo page styles only */
+        body {
+            background: #f4f4f4;
+        }
+
+        section {
+            text-align: center;
+            padding: 30px 0;
+        }
+
+        section a {
+            margin: 0 10px;
+        }
+
+        a.logo {
+            color: #bbb;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: bold;
+            text-shadow: 1px 1px rgba(255, 255, 255, 0.5);
+            font-family: sans-serif;
+        }
+    </style>
 </head>
 <body>
 
-<p>
-    promoBox JavaScript Promo Popup Demo
-    <a id="clickMe" href="#" style="display: block; margin: 30px 0 60px;">Click here to trigger lightbox</a>
-    <a href="https://github.com/rolandtoth/promoBox" title="" target="_blank" style="color: #bbb; text-decoration: none; font-size: 13px; font-weight: bold; text-shadow: 1px 1px rgba(255, 255, 255, 0.5); font-family: sans-serif;">promoBox</a>
-</p>
+<section>
+
+    <p>promoBox JavaScript Promo Popup Demo</p>
+
+    <br />
+
+    <p>
+        <a id="startPromo" href="#">Trigger promoBox</a> <a id="startActionButtons" href="#">With buttons</a> <a id="startInterstitial" href="#">Interstitial</a>
+        <a id="startDelayed" href="#">Delayed start</a>
+    </p>
+
+    <br />
+    <br />
+
+    <p>
+        <a href="https://github.com/rolandtoth/promoBox" target="_blank" class="logo">promoBox</a>
+    </p>
+</section>
 
 <script type="text/javascript">
 
-    window.onload = function () {
-        promoBox({
-            imagePath: 'bird.jpg',
-            link: 'http://blog.rolandtoth.hu/post/82572422490/promobox-simple-javascript-promo-popup',
-            target: '_blank',
-            disableOverlay: false,
-            disableOverlayClose: false,
-            disableStyles: false,
-            disableCloseButton: false,
-            disableKeyClose: false,
-            closeButtonText: '',
-//            showOnHash: '#promo',
-//            startDate: 'April 12, 2014 02:30:00',
-//            endDate: 'May 20, 2014 19:27:00',
-            daysToSeeAgain: 0.33,
-            deleteCookieOnHash: '#clear',
-            fadeInDuration: 0.5,
-            fadeOutDuration: 0.2,
-            loadDelay: 0.33,
-//            interstitialDuration: 30,
-//            interstitialSkipText: 'Skip this advertisement',
-//            interstitialText: 'or wait %s secs',
-            autoCloseSeconds: 30
-        });
-    };
+    promoBox({
+        imagePath: 'https://raw.githubusercontent.com/rolandtoth/promoBox/master/bird.jpg',
+        link: 'https://github.com/rolandtoth/promoBox',
+        target: '_blank',
+        disableOverlay: false,
+        disableOverlayClose: false,
+        disableStyles: false,
+        disableCloseButton: false,
+        disableKeyClose: false,
+        closeButtonText: '',
+        //            showOnHash: '#promo',
+        //            startDate: 'April 12, 2014 02:30:00',
+        //            endDate: 'May 20, 2014 19:27:00',
+        //            daysToSeeAgain: 0.33,
+        deleteCookieOnHash: '#clear',
+        fadeInDuration: 0.5,
+        fadeOutDuration: 0.2,
+//        loadDelay: 0.1,
+        //            interstitialSkipText: 'Skip this advertisement',
+        //            interstitialText: 'or wait %s secs',
+        autoCloseSeconds: 30
+    });
 
-    document.getElementById('clickMe').onclick = function () {
+    var demoImage = 'https://raw.githubusercontent.com/rolandtoth/promoBox/master/breeze.jpg';
+
+    document.getElementById('startPromo').onclick = function () {
         promoBox({
-            imagePath: 'breeze.jpg',
+            imagePath: demoImage,
             closeButtonText: 'close',
             fadeInDuration: 0.33,
-            fadeOutDuration: 0.2
+            fadeOutDuration: 0.2,
+            autoCloseSeconds: 5
         });
-
         return false;
     };
 
+    document.getElementById('startActionButtons').onclick = function () {
+        promoBox({
+            imagePath: demoImage,
+            fadeInDuration: 0.33,
+            fadeOutDuration: 0.2,
+            actionButtons: [
+                ['Visit GitHub', 'https://github.com/rolandtoth/promoBox', '_blank', 'external github'],
+                ['Jump to anchor', '#anchor', '', 'jumpLink'],
+                ['Cancel']
+            ]
+        });
+        return false;
+    };
+
+    document.getElementById('startDelayed').onclick = function () {
+        promoBox({
+            imagePath: demoImage,
+            fadeInDuration: 0.33,
+            fadeOutDuration: 0.2,
+            loadDelay: 2
+        });
+        return false;
+    };
+
+    document.getElementById('startInterstitial').onclick = function () {
+        promoBox({
+            imagePath: demoImage,
+            fadeInDuration: 0.2,
+            fadeOutDuration: 0.1,
+            interstitialDuration: 30,
+            interstitialSkipText: 'Close interstitial',
+            interstitialText: 'or wait %s seconds to continue'
+        });
+        return false;
+    };
+
+    // callback functions
     var promoBoxStart = function () {
-	if (typeof console !== "undefined") {
-		console.log('promoBox has started...');
+        if (typeof console !== "undefined") {
+            console.log('promoBox has started...');
         }
     };
-	
+
     var promoBoxClick = function () {
-	if (typeof console !== "undefined") {
-		console.log('promoBox image was clicked');
+        if (typeof console !== "undefined") {
+            console.log('promoBox image was clicked');
         }
     };
-	
+
     var promoBoxClose = function () {
-	if (typeof console !== "undefined") {
-		console.log('promoBox terminated');
-	}
+        if (typeof console !== "undefined") {
+            console.log('promoBox terminated');
+        }
     };
-    
+
 </script>
 
 </body>
