@@ -126,7 +126,7 @@ Only exact matches count.
 
 **randomFrequency**
 
-How often should the popup appear (e.g. `0.5`)
+Sets how often should the popup displayed (e.g. `0.5`, meaning about 50% probability).
 
 Accepts values from `0.1` to `1`, higher values mean more frequent displays.
 
