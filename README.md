@@ -26,6 +26,15 @@ Compatibility
 * IE8+ (without some CSS3 animations)
 * modern browsers
 
+Styling
+-----------
+promoBox comes with a minimalistic default style included in promoBox.js.
+
+To modify, simply override rules in your CSS file (no need to use the `important!` property).
+
+To completely remove built-in styles, set `disableStyles: true` (see below).
+
+
 Options
 -----------
 
