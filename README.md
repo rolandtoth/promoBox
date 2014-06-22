@@ -100,6 +100,11 @@ Whether to add default styles (`true` or `false`)
 Whether to show the close button in the top-right corner (`true` or `false`)
 
 
+**showScrollbar**
+
+Whether to show the page scrollbar (`true` or `false`, default is `false`)
+
+
 **disableKeyClose**
 
 Whether to disable closing promoBox with the ESC key (`true` or `false`)
@@ -117,6 +122,13 @@ Show the popup only if the current url has a given hash (e.g. `#promo`).
 Add multiple values as an array (e.g. `["#demo", "#test"]`).
 
 Only exact matches count.
+
+
+**randomFrequency**
+
+How often should the popup appear (e.g. `0.5`)
+
+Accepts values from `0.1` to `1`, higher values mean more frequent displays.
 
 
 **startDate**

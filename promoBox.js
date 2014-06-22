@@ -1,7 +1,7 @@
 /*!
  * promoBox v1.5 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
- * last update: 2014.06.21.
+ * last update: 2014.06.22.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth (tpr)
@@ -29,6 +29,8 @@ var promoBox = function (o) {
     /*jslint browser: true */
 
     var helpers, PB, autoCloseID, interstitialCloseID,
+        head = document.getElementsByTagName('head')[0],
+        body = document.body,
         currentURL = window.location.href;
 
     helpers = {
@@ -50,10 +52,9 @@ var promoBox = function (o) {
 
             readCookie: function (name) {
 
-                var nameEQ, ca, i, c;
-
-                nameEQ = name + '=';
-                ca = document.cookie.split(';');
+                var i, c,
+                    nameEQ = name + '=',
+                    ca = document.cookie.split(';');
 
                 for (i = 0; i < ca.length; i += 1) {
                     c = ca[i];
@@ -89,8 +90,7 @@ var promoBox = function (o) {
 
         makeElement: function (tag, properties, text) {
 
-            var obj = document.createElement(tag),
-                i;
+            var obj = document.createElement(tag), i;
 
             for (i in properties) {
                 if (properties.hasOwnProperty(i)) {
@@ -140,6 +140,11 @@ var promoBox = function (o) {
             } else {
                 event.returnValue = false;
             }
+        },
+
+        checkFrequency: function (rate) {
+            var seed = Math.floor(Math.random() * (1 / rate));
+            return seed === 0;
         }
     };
 
@@ -147,17 +152,20 @@ var promoBox = function (o) {
 
         addStyles: function () {
 
-            var head = document.getElementsByTagName('head')[0],
-                styles = [
-                    '#promoContainer { opacity: 0; position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
-                    '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #000; background: rgba(0, 0, 0, 0.6); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); pointer-events: all; }',
-                    '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
-                    '#promoImage { max-width: 100%; height: auto; width: auto; box-sizing: border-box; display: block; border: 8px solid #fff; }',
-                    '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; height: 15px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; text-decoration: none; }',
-                    '#promoClose:hover { opacity: 1; cursor: pointer; }',
-                    '#promoButtons { position: absolute; bottom: 0; width: 100%; padding: 24px 0; }',
-                    '#promoButtons a { display: inline-block; text-decoration: none; padding: 5px 16px; background: #fff; text-align: center; margin: 0 6px; color: #000; }'
-                ].join('');
+            if (o.disableStyles) {
+                return false;
+            }
+
+            var styles = [
+                '#promoContainer { opacity: 0; position: fixed; width: 100%; height: 100%; text-align: center; top: 0; left: 0; z-index: 9991; pointer-events: none; }',
+                '#promoOverlay { position: fixed; width: 100%; height: 100%; top: 0; left: 0; zoom: 1; z-index: 9990; background: #000; background: rgba(0, 0, 0, 0.6); -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=60)"; filter: alpha(opacity=60); pointer-events: all; }',
+                '#promoContent { position: relative; display: inline-block; top: 10%; max-width: 80%; height: auto; z-index: 9992; pointer-events: all; }',
+                '#promoImage { height: auto; width: auto; max-width: 100%; max-height: 75%; box-sizing: border-box; display: block; border: 8px solid #fff; }',
+                '#promoClose { position: absolute; top: 0; right: 0; display: block; line-height: 16px; text-align: right; padding: 24px 28px; color: #000; z-index: 9992; font-family: sans-serif; font-size: 17px; opacity: 0.6; transition: 0.1s all; text-decoration: none; }',
+                '#promoClose:hover { opacity: 1; cursor: pointer; }',
+                '#promoButtons { position: absolute; bottom: 0; width: 100%; padding: 24px 0; }',
+                '#promoButtons a { display: inline-block; text-decoration: none; padding: 5px 16px; background: #fff; text-align: center; margin: 0 6px; color: #000; }'
+            ].join('');
 
             if (o.interstitialDuration) {
                 styles += [
@@ -187,16 +195,25 @@ var promoBox = function (o) {
                 ].join('');
             }
 
-            if (this.promo.styles.styleSheet) {
-                this.promo.styles.styleSheet.cssText = styles;
+            if (!o.showScrollbar) {
+                styles += 'body { overflow: hidden; }';
+                if (window.innerHeight < body.scrollHeight) {
+                    styles += 'body { width: ' + body.offsetWidth + 'px; }';
+                }
+            }
+
+            PB.styles = helpers.makeElement('style', {id: 'promoStyle', type: 'text/css'});
+
+            if (PB.styles.styleSheet) {
+                PB.styles.styleSheet.cssText = styles;
             } else {
-                this.promo.styles.appendChild(document.createTextNode(styles));
+                PB.styles.appendChild(document.createTextNode(styles));
             }
 
             if (head.firstChild) {
-                head.insertBefore(this.promo.styles, head.firstChild);
+                head.insertBefore(PB.styles, head.firstChild);
             } else {
-                head.appendChild(this.promo.styles);
+                head.appendChild(PB.styles);
             }
         },
 
@@ -219,6 +236,8 @@ var promoBox = function (o) {
             o.showIfUrlContains = o.showIfUrlContains || null;
             o.showOnHash = o.showOnHash || null;
             o.deleteCookieOnHash = o.deleteCookieOnHash || null;
+            o.showScrollbar = o.showScrollbar || false;
+            o.randomFrequency = o.randomFrequency || 1;
             o.startDate = o.startDate || null;
             o.endDate = o.endDate || null;
             o.daysToSeeAgain = o.daysToSeeAgain || null;
@@ -231,6 +250,9 @@ var promoBox = function (o) {
             o.autoCloseSeconds = o.autoCloseSeconds || null;
 
             if (!o.imagePath) {
+                return false;
+            }
+            if (o.randomFrequency && !helpers.checkFrequency(o.randomFrequency)) {
                 return false;
             }
 
@@ -290,8 +312,7 @@ var promoBox = function (o) {
                 content: helpers.makeElement('div', {id: 'promoContent'}),
                 image: helpers.makeElement('img', {id: 'promoImage', src: o.imagePath}),
                 close: helpers.makeElement('a', {id: 'promoClose', href: '#'}, o.closeButtonText || '×'),
-                buttons: helpers.makeElement('div', {id: 'promoButtons'}),
-                styles: o.disableStyles ? null : helpers.makeElement('style', {id: 'promoStyle', type: 'text/css'})
+                buttons: helpers.makeElement('div', {id: 'promoButtons'})
             };
 
             if (o.interstitialDuration) {
@@ -351,7 +372,7 @@ var promoBox = function (o) {
 
             this.promo.container.appendChild(this.promo.content);
 
-            document.body.appendChild(this.promo.container);
+            body.appendChild(this.promo.container);
         },
 
         addListeners: function () {
@@ -408,11 +429,11 @@ var promoBox = function (o) {
             destroyPromo: function () {
 
                 if (PB.promo.container) {
-                    document.body.removeChild(PB.promo.container);
+                    body.removeChild(PB.promo.container);
                 }
 
-                if (PB.promo.styles) {
-                    PB.promo.styles.parentNode.removeChild(PB.promo.styles);
+                if (PB.styles) {
+                    PB.styles.parentNode.removeChild(PB.styles);
                 }
 
                 PB = null;
@@ -486,12 +507,9 @@ var promoBox = function (o) {
 
         startPromo: function () {
             helpers.callCallBack('promoBoxStart');
+            PB.addStyles();
             PB.buildPromo();
             PB.addListeners();
-
-            if (!o.disableStyles) {
-                PB.addStyles();
-            }
         }
     };
 
