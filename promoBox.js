@@ -41,7 +41,7 @@ var promoBox = function (o) {
 
                 var expires = '', date;
 
-                if (days) {
+                if (days && days !== 'session') {
                     date = new Date();
                     date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
                     expires = '; expires=' + date.toGMTString();
@@ -240,7 +240,7 @@ var promoBox = function (o) {
             o.randomFrequency = o.randomFrequency || 1;
             o.startDate = o.startDate || null;
             o.endDate = o.endDate || null;
-            o.daysToSeeAgain = o.daysToSeeAgain || null;
+            o.cookieLifetime = o.cookieLifetime || null;
             o.fadeInDuration = o.fadeInDuration || 0;
             o.fadeOutDuration = o.fadeOutDuration || 0;
             o.loadDelay = o.loadDelay || null;
@@ -258,11 +258,11 @@ var promoBox = function (o) {
 
             if (o.deleteCookieOnHash && helpers.findInArray(o.deleteCookieOnHash, document.location.hash, true)) {
                 helpers.cookie.eraseCookie('promoBox');
-            } else if (o.daysToSeeAgain) {
+            } else if (o.cookieLifetime) {
                 if (helpers.cookie.readCookie('promoBox')) {
                     return false;
                 }
-                helpers.cookie.createCookie('promoBox', '1', o.daysToSeeAgain);
+                helpers.cookie.createCookie('promoBox', '1', o.cookieLifetime);
             }
 
             if (o.startDate) {

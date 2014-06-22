@@ -13,8 +13,9 @@ Features
 * set number of days after the popup should be shown again
 * specify urls or hashes to show or hide the popup
 * interstitial feature with countdown timer and skip link
-* delayed start and autoclose
-* easy deployment: one JavaScript file, no library dependency
+* delayed start and autoclose options
+* configurable display frequency
+* easy deployment: one JavaScript file, no markup, no library dependency 
 * easy styling: custom CSS classes
 * localization: all texts configurable
 * callback functions on start, button click and close
@@ -40,17 +41,17 @@ Options
 
 **imagePath**
 
-Absolute or relative path to the image to display (**required**)
+Absolute or relative path to the image to display (**required**).
 
 
 **link**
 
-URL to visit when clicking on the main image
+URL to visit when clicking on the main image.
 
 
 **target**
 
-Target of the main image link (e.g. `_blank`)
+Target of the main image link (e.g. `_blank`).
 
 
 **actionButtons**
@@ -77,42 +78,42 @@ actionButtons: [
 
 **className**
 
-Custom class(es) to add to the promoBox container (e.g. `myPromo` or `myPromo container`)
+Custom class(es) to add to the promoBox container (e.g. `myPromo` or `myPromo container`).
 
 
 **disableOverlay**
 
-Whether to show the overlay background (`true` or `false`)
+Whether to show the overlay background (`true` or `false`).
 
 
 **disableOverlayClose**
 
-Whether to enable closing promoBox by clicking on the overlay (`true` or `false`)
+Whether to enable closing promoBox by clicking on the overlay (`true` or `false`).
 
 
 **disableStyles**
 
-Whether to add default styles (`true` or `false`)
+Whether to add default styles (`true` or `false`).
 
 
 **disableCloseButton**
 
-Whether to show the close button in the top-right corner (`true` or `false`)
+Whether to show the close button in the top-right corner (`true` or `false`).
 
 
 **showScrollbar**
 
-Whether to show the page scrollbar (`true` or `false`, default is `false`)
+Whether to show the page scrollbar (`true` or `false`, default is `false`).
 
 
 **disableKeyClose**
 
-Whether to disable closing promoBox with the ESC key (`true` or `false`)
+Whether to disable closing promoBox with the ESC key (`true` or `false`).
 
 
 **closeButtonText**
 
-Custom text for the close button (e.g. `Close popup`)
+Custom text for the close button (e.g. `Close popup`).
 
 
 **showOnHash**
@@ -133,22 +134,24 @@ Accepts values from `0.1` to `1`, higher values mean more frequent displays.
 
 **startDate**
 
-Date from the popup should appear (e.g. `April 12, 2014 02:30:00`)
+Date from the popup should appear (e.g. `April 12, 2014 02:30:00`).
 
 
 **endDate**
 
-Date until the popup should appear (e.g. `April 16, 2014 19:27:00`)
+Date until the popup should appear (e.g. `April 16, 2014 19:27:00`).
 
 
-**daysToSeeAgain**
+**cookieLifetime**
 
-Number of days to show the popup again for a visitor (uses a cookie, e.g. `2`)
+Number of days to show the popup again for a visitor (uses a cookie, e.g. `2` or `0.33`).
+
+Set value to `session` to show the popup again after reopening the browser.
 
 
 **deleteCookieOnHash**
 
-Delete cookie set with 'daysToSeeAgain' if the current url has the supplied hash (e.g. `#clear`). 
+Delete cookie set with 'cookieLifetime' if the current url has the supplied hash (e.g. `#clear`). 
 
 Add multiple values as an array (e.g. `["#clear", "#test"]`).
 
@@ -175,37 +178,37 @@ Partial matches are allowed.
 
 **fadeInDuration**
 
-Duration of fade-in effect in seconds (e.g. `0.7`)
+Duration of fade-in effect in seconds (e.g. `0.7`).
 
 
 **fadeOutDuration**
 
-Duration of fade-out effect in seconds (e.g. `0.7`)
+Duration of fade-out effect in seconds (e.g. `0.7`).
 
 
 **loadDelay**
 
-Delay in seconds to display promoBox (e.g. `2.5`)
+Delay in seconds to display promoBox (e.g. `2.5`).
 
 
 **interstitialDuration**
 
-If set greater than 0 an interstitial will be shown with a countdown timer (seconds, e.g. `30`)
+If set greater than 0 an interstitial will be shown with a countdown timer (seconds, e.g. `30`).
 
 
 **interstitialSkipText**
 
-Text of the link to close the interstitial (default is `Skip this ad`)
+Text of the link to close the interstitial (default is `Skip this ad`).
 
 
 **interstitialText**
 
-Text of the interstitial (default is `or wait %s seconds` where %s is the value of interstitialDuration)
+Text of the interstitial (default is `or wait %s seconds` where %s is the value of interstitialDuration).
 
 
 **autoCloseSeconds**
 
-Automatically close the popup after given seconds (e.g. `10`)
+Automatically close the popup after given seconds (e.g. `10`).
 
 
 **Callback functions**
