@@ -273,7 +273,6 @@ var promoBox = function (o) {
                 o.disableOverlay = false;
                 o.disableOverlayClose = true;
                 o.disableCloseButton = true;
-                o.disableKeyClose = true;
                 o.closeButtonText = null;
                 o.autoCloseSeconds = o.interstitialDuration;
             }
@@ -438,7 +437,9 @@ var promoBox = function (o) {
                         helpers.addClass(PB.promo.container, 'fadeOut');
 
                         setTimeout(function () {
-                            PB.events.destroyPromo();
+                            if (PB) {
+                                PB.events.destroyPromo();
+                            }
                         }, o.fadeOutDuration * 1000);
 
                     } else {
