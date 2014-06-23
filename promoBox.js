@@ -245,6 +245,7 @@ var promoBox = function (o) {
             o.cookieLifetime = o.cookieLifetime || null;
             o.deleteCookieOnUrl = o.deleteCookieOnUrl || null;
             o.disableCloseButton = o.disableCloseButton || null;
+            o.disableCloseOnClick = o.disableCloseOnClick || false;
             o.disableOverlay = o.disableOverlay || null;
             o.disableOverlayClose = o.disableOverlayClose || null;
             o.disableStyles = o.disableStyles || null;
@@ -540,7 +541,9 @@ var promoBox = function (o) {
                     window.open(link, target);
                 }
 
-                PB.events.close();
+                if (!o.disableCloseOnClick || link.indexOf('#promoClose') !== -1) {
+                    PB.events.close();
+                }
             }
         },
 

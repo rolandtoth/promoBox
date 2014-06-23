@@ -101,6 +101,13 @@ Whether to add default styles (`true` or `false`).
 Whether to show the close button in the top-right corner (`true` or `false`).
 
 
+**disableCloseOnClick**
+
+Whether to close the popup when clicking on the main image or action buttons (`true` or `false`).
+
+Ignored if link url is `#promoClose` (closes the popup).
+
+
 **showScrollbar**
 
 Whether to show the page scrollbar (`true` or `false`, default is `false`).
