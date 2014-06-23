@@ -11,22 +11,22 @@
 /*global window, document */
 /*jslint browser: true */
 
-if (!Array.prototype.indexOf) {
-    Array.prototype.indexOf = function (obj, start) {
-        var i = (start || 0),
-            j = this.length;
-
-        for (i; i < j; i = i + 1) {
-            if (this[i] === obj) {
-                return i;
-            }
-        }
-        return -1;
-    };
-}
-
 var PBlib = (function () {
     'use strict';
+
+    if (!Array.prototype.indexOf) {
+        Array.prototype.indexOf = function (obj, start) {
+            var i = (start || 0),
+                j = this.length;
+
+            for (i; i < j; i = i + 1) {
+                if (this[i] === obj) {
+                    return i;
+                }
+            }
+            return -1;
+        };
+    }
 
     return {
 
