@@ -300,6 +300,10 @@ var promoBox = function (o) {
                     }
                 }
 
+                if (deleteCookie) {
+                    helpers.cookie.eraseCookie('promoBox');
+                }
+
                 if (o.cookieLifetime) {
                     if (helpers.cookie.readCookie('promoBox')) {
                         return false;
