@@ -1,5 +1,5 @@
 /*!
- * promoBox v1.5 - Simple JavaScript Promo Popup
+ * promoBox v1.6 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
  * last update: 2014.06.23.
  *
@@ -8,9 +8,11 @@
  *
  */
 
+/*global window, document */
+/*jslint browser: true */
+
 if (!Array.prototype.indexOf) {
     Array.prototype.indexOf = function (obj, start) {
-        'use strict';
         var i = (start || 0),
             j = this.length;
 
@@ -23,17 +25,10 @@ if (!Array.prototype.indexOf) {
     };
 }
 
-var promoBox = function (o) {
+var PBlib = (function () {
     'use strict';
-    /*global window, document */
-    /*jslint browser: true */
 
-    var helpers, PB, autoCloseID, interstitialCloseID,
-        head = document.getElementsByTagName('head')[0],
-        body = document.body,
-        currentUrl = window.location.href;
-
-    helpers = {
+    return {
 
         cookie: {
 
@@ -131,7 +126,7 @@ var promoBox = function (o) {
                 return false;
             }
 
-            if (helpers.isArray(search) && search.length === 0) {
+            if (PBlib.isArray(search) && search.length === 0) {
                 return false;
             }
 
@@ -159,6 +154,15 @@ var promoBox = function (o) {
             return seed === 0;
         }
     };
+}());
+
+var promoBox = function (o) {
+    'use strict';
+
+    var PB, autoCloseID, interstitialCloseID,
+        head = document.getElementsByTagName('head')[0],
+        body = document.body,
+        currentUrl = window.location.href;
 
     PB = {
 
@@ -214,7 +218,7 @@ var promoBox = function (o) {
                 }
             }
 
-            PB.styles = helpers.makeElement('style', {id: 'promoStyle', type: 'text/css'});
+            PB.styles = PBlib.makeElement('style', {id: 'promoStyle', type: 'text/css'});
 
             if (PB.styles.styleSheet) {
                 PB.styles.styleSheet.cssText = styles;
@@ -261,20 +265,20 @@ var promoBox = function (o) {
             o.startDate = o.startDate || null;
             o.target = o.target || '_self';
 
-            randomFrequency = o.randomFrequency && !helpers.checkFrequency(o.randomFrequency);
-            forceOnUrl = !!o.forceOnUrl && helpers.findInArray(o.forceOnUrl, currentUrl);
-            deleteCookie = !!o.deleteCookieOnUrl && helpers.findInArray(o.deleteCookieOnUrl, currentUrl);
+            randomFrequency = o.randomFrequency && !PBlib.checkFrequency(o.randomFrequency);
+            forceOnUrl = !!o.forceOnUrl && PBlib.findInArray(o.forceOnUrl, currentUrl);
+            deleteCookie = !!o.deleteCookieOnUrl && PBlib.findInArray(o.deleteCookieOnUrl, currentUrl);
 
             showOnUrl = (function (obj) {
-                if (!obj || (helpers.isArray(obj) && !obj.length)) {
+                if (!obj || (PBlib.isArray(obj) && !obj.length)) {
                     return false;
                 }
-                if (!!obj && !helpers.findInArray(obj, currentUrl)) {
+                if (!!obj && !PBlib.findInArray(obj, currentUrl)) {
                     return true;
                 }
             }(o.showOnUrl));
 
-            hideOnUrl = !!o.hideOnUrl && helpers.findInArray(o.hideOnUrl, currentUrl);
+            hideOnUrl = !!o.hideOnUrl && PBlib.findInArray(o.hideOnUrl, currentUrl);
 
             if (!o.imagePath) {
                 return false;
@@ -301,15 +305,15 @@ var promoBox = function (o) {
                 }
 
                 if (deleteCookie) {
-                    helpers.cookie.eraseCookie('promoBox');
+                    PBlib.cookie.eraseCookie('promoBox');
                 }
 
                 if (o.cookieLifetime) {
-                    if (helpers.cookie.readCookie('promoBox')) {
+                    if (PBlib.cookie.readCookie('promoBox')) {
                         return false;
                     }
                     if (!deleteCookie) {
-                        helpers.cookie.createCookie('promoBox', '1', o.cookieLifetime);
+                        PBlib.cookie.createCookie('promoBox', '1', o.cookieLifetime);
                     }
                 }
 
@@ -323,7 +327,7 @@ var promoBox = function (o) {
             }
 
             if (deleteCookie) {
-                helpers.cookie.eraseCookie('promoBox');
+                PBlib.cookie.eraseCookie('promoBox');
             }
 
             if (o.interstitialDuration) {
@@ -342,12 +346,12 @@ var promoBox = function (o) {
             var i = 0;
 
             this.promo = {
-                overlay: helpers.makeElement('div', {id: 'promoOverlay'}),
-                container: helpers.makeElement('div', {id: 'promoContainer'}),
-                content: helpers.makeElement('div', {id: 'promoContent'}),
-                image: helpers.makeElement('img', {id: 'promoImage', src: o.imagePath}),
-                close: helpers.makeElement('a', {id: 'promoClose', href: '#'}, o.closeButtonText || '×'),
-                buttons: helpers.makeElement('div', {id: 'promoButtons'})
+                overlay: PBlib.makeElement('div', {id: 'promoOverlay'}),
+                container: PBlib.makeElement('div', {id: 'promoContainer'}),
+                content: PBlib.makeElement('div', {id: 'promoContent'}),
+                image: PBlib.makeElement('img', {id: 'promoImage', src: o.imagePath}),
+                close: PBlib.makeElement('a', {id: 'promoClose', href: '#'}, o.closeButtonText || '×'),
+                buttons: PBlib.makeElement('div', {id: 'promoButtons'})
             };
 
             if (o.interstitialDuration) {
@@ -356,8 +360,8 @@ var promoBox = function (o) {
 
                 o.interstitialText = o.interstitialText.replace('%s', this.promo.interstitialCounter);
 
-                this.promo.interstitialText = helpers.makeElement('p', {id: 'interstitialText'}, '&nbsp;' + o.interstitialText);
-                this.promo.interstitialSkipText = helpers.makeElement('a', {
+                this.promo.interstitialText = PBlib.makeElement('p', {id: 'interstitialText'}, '&nbsp;' + o.interstitialText);
+                this.promo.interstitialSkipText = PBlib.makeElement('a', {
                     id: 'interstitialSkipText',
                     href: '#'
                 }, o.interstitialSkipText);
@@ -365,11 +369,11 @@ var promoBox = function (o) {
                 this.promo.interstitialText.insertBefore(this.promo.interstitialSkipText, this.promo.interstitialText.firstChild);
                 this.promo.container.appendChild(this.promo.interstitialText);
 
-                helpers.addClass(this.promo.container, 'interstitial');
+                PBlib.addClass(this.promo.container, 'interstitial');
             }
 
             if (o.link) {
-                this.promo.link = helpers.makeElement('a', {id: 'promoLink', href: o.link, target: o.target});
+                this.promo.link = PBlib.makeElement('a', {id: 'promoLink', href: o.link, target: o.target});
                 this.promo.content.appendChild(this.promo.link);
                 this.promo.link.appendChild(this.promo.image);
             } else {
@@ -388,7 +392,7 @@ var promoBox = function (o) {
 
                 for (i = 0; i < o.actionButtons.length; i = i + 1) {
                     this.promo.buttons.appendChild(
-                        helpers.makeElement('a',
+                        PBlib.makeElement('a',
                             {
                                 'href': o.actionButtons[i][1] || '#promoClose',
                                 'target': o.actionButtons[i][2] || '',
@@ -402,7 +406,7 @@ var promoBox = function (o) {
             }
 
             if (o.className) {
-                helpers.addClass(this.promo.container, o.className);
+                PBlib.addClass(this.promo.container, o.className);
             }
 
             this.promo.container.appendChild(this.promo.content);
@@ -419,31 +423,31 @@ var promoBox = function (o) {
                 };
 
             if (!o.disableCloseButton) {
-                helpers.addEvent(this.promo.close, 'click', this.events.close);
+                PBlib.addEvent(this.promo.close, 'click', this.events.close);
             }
 
             if (!o.disableOverlayClose) {
-                helpers.addEvent(this.promo.overlay, 'click', this.events.close);
+                PBlib.addEvent(this.promo.overlay, 'click', this.events.close);
             }
 
             if (promoButtons && promoButtons.childNodes) {
                 for (i = 0; i < promoButtons.childNodes.length; i = i + 1) {
-                    helpers.addEvent(promoButtons.childNodes[i], 'click', setEventProperties);
+                    PBlib.addEvent(promoButtons.childNodes[i], 'click', setEventProperties);
                 }
             }
 
             if (o.link) {
-                helpers.addEvent(this.promo.link, 'click', function (event) {
+                PBlib.addEvent(this.promo.link, 'click', function (event) {
                     PB.events.openLink(event, o.link, o.target);
                 });
             }
 
             if (!o.disableKeyClose) {
-                helpers.addEvent(document, 'keydown', this.events.keyClose);
+                PBlib.addEvent(document, 'keydown', this.events.keyClose);
             }
 
             if (o.interstitialDuration) {
-                helpers.addEvent(this.promo.interstitialSkipText, 'click', this.events.close);
+                PBlib.addEvent(this.promo.interstitialSkipText, 'click', this.events.close);
                 interstitialCloseID = setInterval(function () {
                     var counter = document.getElementById('interstitialCounter');
                     if (counter && counter.innerHTML > 0) {
@@ -477,20 +481,20 @@ var promoBox = function (o) {
             close: function (event) {
 
                 if (event) {
-                    helpers.preventDefault(event);
+                    PBlib.preventDefault(event);
                 }
 
                 if (!PB) {
                     return false;
                 }
 
-                helpers.callCallBack('promoBoxClose');
+                PBlib.callCallBack('promoBoxClose');
 
                 if (PB.promo.container) {
 
                     if (o.fadeOutDuration > 0) {
 
-                        helpers.addClass(PB.promo.container, 'fadeOut');
+                        PBlib.addClass(PB.promo.container, 'fadeOut');
 
                         setTimeout(function () {
                             if (PB) {
@@ -527,10 +531,10 @@ var promoBox = function (o) {
             openLink: function (event, link, target) {
 
                 if (event) {
-                    helpers.preventDefault(event);
+                    PBlib.preventDefault(event);
                 }
 
-                helpers.callCallBack('promoBoxClick');
+                PBlib.callCallBack('promoBoxClick');
 
                 if (link.indexOf('#promoClose') === -1) {
                     window.open(link, target);
@@ -541,7 +545,7 @@ var promoBox = function (o) {
         },
 
         startPromo: function () {
-            helpers.callCallBack('promoBoxStart');
+            PBlib.callCallBack('promoBoxStart');
             PB.addStyles();
             PB.buildPromo();
             PB.addListeners();
@@ -549,7 +553,7 @@ var promoBox = function (o) {
     };
 
     if (PB.init()) {
-        helpers.loadSprite(o.imagePath, function () {
+        PBlib.loadSprite(o.imagePath, function () {
             window.promoBoxInstanceID = clearTimeout(window.promoBoxInstanceID) || setTimeout(function () {
                 PB.startPromo();
             }, o.loadDelay * 1000);
