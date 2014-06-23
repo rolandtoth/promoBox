@@ -116,15 +116,6 @@ Whether to disable closing promoBox with the ESC key (`true` or `false`).
 Custom text for the close button (e.g. `Close popup`).
 
 
-**showOnHash**
-
-Show the popup only if the current url has a given hash (e.g. `#promo`).
-
-Add multiple values as an array (e.g. `["#demo", "#test"]`).
-
-Only exact matches count.
-
-
 **randomFrequency**
 
 Sets how often should the popup displayed (e.g. `0.5`, meaning about 50% probability).
@@ -151,29 +142,34 @@ Set value to `session` to show the popup again after reopening the browser.
 
 **deleteCookieOnHash**
 
-Delete cookie set with 'cookieLifetime' if the current url has the supplied hash (e.g. `#clear`). 
+Remove cookie set with `cookieLifetime` if the current url contains the supplied string (e.g. `#clear`). 
 
 Add multiple values as an array (e.g. `["#clear", "#test"]`).
 
 Only exact matches count.
 
 
-**showIfUrlContains**
+**showOnUrl**
 
-Show promoBox only if the current url contains the supplied string (e.g. `/products/`).
+Show promoBox only if the current url contains the supplied string (e.g. `/products/`, `#promo`).
 
-Add multiple values as an array (e.g. `["promotion", "freebies/docs"]`).
-
-Partial matches are allowed.
+Add multiple values as an array (e.g. `["/products/", "freebies/docs"]`).
 
 
-**hideIfUrlContains** 
+**hideOnUrl** 
 
-Show promoBox only if the current url does not contain the supplied string (e.g. `profile`).
+Do not show promoBox if the current url contains the supplied string (e.g. `profile`, `#disable`).
 
-Add multiple values as an array (e.g. `["dev.mysite", "mysite.com/about-us"]`).
+Add multiple values as an array (e.g. `["profile", "dev.mysite"]`).
 
-Partial matches are allowed.
+
+**forceOnUrl**
+
+Force showing promoBox if the current url contains the supplied string (e.g. `/public`, `#force`).
+
+Add multiple values as an array (e.g. `["/public", "dev"]`).
+
+Overrides any other validation except `imagePath`.
 
 
 **fadeInDuration**

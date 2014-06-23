@@ -1,7 +1,7 @@
 /*!
  * promoBox v1.5 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
- * last update: 2014.06.22.
+ * last update: 2014.06.23.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth (tpr)
@@ -31,7 +31,7 @@ var promoBox = function (o) {
     var helpers, PB, autoCloseID, interstitialCloseID,
         head = document.getElementsByTagName('head')[0],
         body = document.body,
-        currentURL = window.location.href;
+        currentUrl = window.location.href;
 
     helpers = {
 
@@ -119,14 +119,26 @@ var promoBox = function (o) {
             sprite.src = src;
         },
 
-        findInArray: function (search, where, exactMatch) {
+        isArray: function (obj) {
+            return Object.prototype.toString.call(obj) === '[object Array]';
+        },
+
+        findInArray: function (search, where) {
 
             var i;
+
+            if (!search) {
+                return false;
+            }
+
+            if (helpers.isArray(search) && search.length === 0) {
+                return false;
+            }
 
             search = (typeof search === 'string') ? [search] : search;
 
             for (i = 0; i < search.length; i = i + 1) {
-                if ((exactMatch && search[i] === where) || (!exactMatch && where.indexOf(search[i]) !== -1)) {
+                if (where.indexOf(search[i]) !== -1) {
                     return true;
                 }
             }
@@ -219,76 +231,95 @@ var promoBox = function (o) {
 
         init: function () {
 
-            var currentDateEpoch = Math.round(new Date().getTime() / 1000);
+            var forceOnUrl, deleteCookie, randomFrequency, showOnUrl, hideOnUrl,
+                currentDateEpoch = Math.round(new Date().getTime() / 1000);
 
-            o.imagePath = o.imagePath || null;
-            o.link = o.link || null;
-            o.target = o.target || '_self';
             o.actionButtons = o.actionButtons || null;
+            o.autoCloseSeconds = o.autoCloseSeconds || null;
             o.className = o.className || null;
+            o.closeButtonText = o.closeButtonText || null;
+            o.cookieLifetime = o.cookieLifetime || null;
+            o.deleteCookieOnUrl = o.deleteCookieOnUrl || null;
+            o.disableCloseButton = o.disableCloseButton || null;
             o.disableOverlay = o.disableOverlay || null;
             o.disableOverlayClose = o.disableOverlayClose || null;
             o.disableStyles = o.disableStyles || null;
-            o.disableCloseButton = o.disableCloseButton || null;
-            o.closeButtonText = o.closeButtonText || null;
-            o.closeButtonText = o.closeButtonText || null;
-            o.showIfUrlContains = o.showIfUrlContains || null;
-            o.showIfUrlContains = o.showIfUrlContains || null;
-            o.showOnHash = o.showOnHash || null;
-            o.deleteCookieOnHash = o.deleteCookieOnHash || null;
-            o.showScrollbar = o.showScrollbar || false;
-            o.randomFrequency = o.randomFrequency || 1;
-            o.startDate = o.startDate || null;
             o.endDate = o.endDate || null;
-            o.cookieLifetime = o.cookieLifetime || null;
             o.fadeInDuration = o.fadeInDuration || 0;
             o.fadeOutDuration = o.fadeOutDuration || 0;
-            o.loadDelay = o.loadDelay || null;
+            o.forceOnUrl = o.forceOnUrl || null;
+            o.hideOnUrl = o.hideOnUrl || null;
+            o.imagePath = o.imagePath || null;
             o.interstitialDuration = o.interstitialDuration || null;
             o.interstitialSkipText = o.interstitialSkipText || 'Skip this ad';
             o.interstitialText = o.interstitialText || 'or wait %s secs';
-            o.autoCloseSeconds = o.autoCloseSeconds || null;
+            o.link = o.link || null;
+            o.loadDelay = o.loadDelay || null;
+            o.randomFrequency = o.randomFrequency || 1;
+            o.showOnUrl = o.showOnUrl || null;
+            o.showScrollbar = o.showScrollbar || false;
+            o.startDate = o.startDate || null;
+            o.target = o.target || '_self';
+
+            randomFrequency = o.randomFrequency && !helpers.checkFrequency(o.randomFrequency);
+            forceOnUrl = !!o.forceOnUrl && helpers.findInArray(o.forceOnUrl, currentUrl);
+            deleteCookie = !!o.deleteCookieOnUrl && helpers.findInArray(o.deleteCookieOnUrl, currentUrl);
+
+            showOnUrl = (function (obj) {
+                if (!obj || (helpers.isArray(obj) && !obj.length)) {
+                    return false;
+                }
+                if (!!obj && !helpers.findInArray(obj, currentUrl)) {
+                    return true;
+                }
+            }(o.showOnUrl));
+
+            hideOnUrl = !!o.hideOnUrl && helpers.findInArray(o.hideOnUrl, currentUrl);
 
             if (!o.imagePath) {
                 return false;
             }
-            if (o.randomFrequency && !helpers.checkFrequency(o.randomFrequency)) {
-                return false;
+
+            if (!forceOnUrl) {
+
+                if (randomFrequency) {
+                    return false;
+                }
+
+                if (o.startDate) {
+                    o.startDate = Math.round(new Date(o.startDate).getTime() / 1000);
+                    if (currentDateEpoch < o.startDate) {
+                        return false;
+                    }
+                }
+
+                if (o.endDate) {
+                    o.endDate = Math.round(new Date(o.endDate).getTime() / 1000);
+                    if (currentDateEpoch > o.endDate) {
+                        return false;
+                    }
+                }
+
+                if (o.cookieLifetime) {
+                    if (helpers.cookie.readCookie('promoBox')) {
+                        return false;
+                    }
+                    if (!deleteCookie) {
+                        helpers.cookie.createCookie('promoBox', '1', o.cookieLifetime);
+                    }
+                }
+
+                if (showOnUrl) {
+                    return false;
+                }
+
+                if (hideOnUrl) {
+                    return false;
+                }
             }
 
-            if (o.deleteCookieOnHash && helpers.findInArray(o.deleteCookieOnHash, document.location.hash, true)) {
+            if (deleteCookie) {
                 helpers.cookie.eraseCookie('promoBox');
-            } else if (o.cookieLifetime) {
-                if (helpers.cookie.readCookie('promoBox')) {
-                    return false;
-                }
-                helpers.cookie.createCookie('promoBox', '1', o.cookieLifetime);
-            }
-
-            if (o.startDate) {
-                o.startDate = Math.round(new Date(o.startDate).getTime() / 1000);
-                if (currentDateEpoch < o.startDate) {
-                    return false;
-                }
-            }
-
-            if (o.endDate) {
-                o.endDate = Math.round(new Date(o.endDate).getTime() / 1000);
-                if (currentDateEpoch > o.endDate) {
-                    return false;
-                }
-            }
-
-            if (o.showIfUrlContains && !helpers.findInArray(o.showIfUrlContains, currentURL, false)) {
-                return false;
-            }
-
-            if (o.hideIfUrlContains && helpers.findInArray(o.hideIfUrlContains, currentURL, false)) {
-                return false;
-            }
-
-            if (o.showOnHash && !helpers.findInArray(o.showOnHash, document.location.hash, true)) {
-                return false;
             }
 
             if (o.interstitialDuration) {
