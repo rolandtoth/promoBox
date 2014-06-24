@@ -212,7 +212,7 @@ var promoBox = function (o) {
             }
 
             if (!o.showScrollbar) {
-                styles += 'body { overflow: hidden; }';
+                styles += 'html { overflow: hidden !important; }';
                 if (window.innerHeight < body.scrollHeight) {
                     styles += 'body { width: ' + body.offsetWidth + 'px; }';
                 }
