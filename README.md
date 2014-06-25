@@ -20,10 +20,12 @@ Features
 * localization: all texts configurable
 * callback functions on start, button click and close
 
-Compatibility
+Demo
 ----------- 
 [http://codepen.io/rolandtoth/pen/Kkdln](http://codepen.io/rolandtoth/pen/Kkdln)
+
 [http://rawgit.com/rolandtoth/promoBox/master/index.html](http://rawgit.com/rolandtoth/promoBox/master/index.html)
+
 
 Compatibility
 -----------
