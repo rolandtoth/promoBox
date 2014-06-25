@@ -1,7 +1,7 @@
 /*!
- * promoBox v1.6 - Simple JavaScript Promo Popup
+ * promoBox v1.7 - Simple JavaScript Promo Popup
  * https://github.com/rolandtoth/promoBox
- * last update: 2014.06.23.
+ * last update: 2014.06.25.
  *
  * Licensed under the MIT license.
  * Copyright 2014 Roland Toth (tpr)
@@ -238,6 +238,10 @@ var promoBox = function (o) {
             var forceOnUrl, deleteCookie, randomWeight, showOnUrl, hideOnUrl,
                 currentDateEpoch = Math.round(new Date().getTime() / 1000);
 
+            if (!o.imagePath) {
+                return false;
+            }
+
             o.actionButtons = o.actionButtons || null;
             o.autoCloseSeconds = o.autoCloseSeconds || null;
             o.className = o.className || null;
@@ -254,7 +258,6 @@ var promoBox = function (o) {
             o.forceOnUrl = o.forceOnUrl || null;
             o.frequency = o.frequency || null;
             o.hideOnUrl = o.hideOnUrl || null;
-            o.imagePath = o.imagePath || null;
             o.interstitialDuration = o.interstitialDuration || null;
             o.interstitialSkipText = o.interstitialSkipText || 'Skip this ad';
             o.interstitialText = o.interstitialText || 'or wait %s secs';
@@ -280,10 +283,6 @@ var promoBox = function (o) {
             }(o.showOnUrl));
 
             hideOnUrl = !!o.hideOnUrl && PBlib.findInArray(o.hideOnUrl, currentUrl);
-
-            if (!o.imagePath) {
-                return false;
-            }
 
             if (!forceOnUrl) {
 
