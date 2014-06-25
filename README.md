@@ -7,17 +7,16 @@ JavaScript function to show promo image popup.
 Features
 -----------
 
-* display a popup image in a lightbox when the page loads
-* add buttons to the lightbox with custom text, link and target
-* set start/end date of showing the popup
-* set number of days after the popup should be shown again
-* specify urls or hashes to show or hide the popup
+* show a popup image in a lightbox
+* allow or restrict popup on specific urls
+* set start/end date, display frequency
 * interstitial feature with countdown timer and skip link
-* delayed start and autoclose options
-* configurable display frequency
+* custom action buttons
+* delayed start and autoclose
+* randomize popup display
+* localization: configurable texts
 * easy deployment: one JavaScript file, no markup, no library dependency 
-* easy styling: custom CSS classes
-* localization: all texts configurable
+* easy styling: add custom CSS classes
 * callback functions on start, button click and close
 
 Demo
