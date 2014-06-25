@@ -128,11 +128,18 @@ Whether to disable closing promoBox with the ESC key (`true` or `false`).
 Custom text for the close button (e.g. `Close popup`).
 
 
-**randomFrequency**
+**frequency**
 
-Sets how often should the popup displayed (e.g. `0.5`, meaning about 50% probability).
+Number of days to show the popup again for a visitor (e.g. `2` or `0.33`, uses a cookie).
 
-Accepts values from `0.1` to `1`, higher values mean more frequent displays.
+Setting to `session` will show the popup again after re-opening the browser.
+
+
+**randomWeight**
+
+Sets what probability the popup should be displayed (e.g. `0.5`, meaning about 50% of the time).
+
+Accepts values from `0.1` to `1`, with higher values meaning more frequent displays.
 
 
 **startDate**
@@ -143,13 +150,6 @@ Date from the popup should appear (e.g. `April 12, 2014 02:30:00`).
 **endDate**
 
 Date until the popup should appear (e.g. `April 16, 2014 19:27:00`).
-
-
-**cookieLifetime**
-
-Number of days to show the popup again for a visitor (uses a cookie, e.g. `2` or `0.33`).
-
-Set value to `session` to show the popup again after reopening the browser.
 
 
 **deleteCookieOnHash**

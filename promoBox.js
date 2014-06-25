@@ -149,7 +149,7 @@ var PBlib = (function () {
             }
         },
 
-        checkFrequency: function (rate) {
+        checkRandomSeed: function (rate) {
             var seed = Math.floor(Math.random() * (1 / rate));
             return seed === 0;
         }
@@ -235,14 +235,13 @@ var promoBox = function (o) {
 
         init: function () {
 
-            var forceOnUrl, deleteCookie, randomFrequency, showOnUrl, hideOnUrl,
+            var forceOnUrl, deleteCookie, randomWeight, showOnUrl, hideOnUrl,
                 currentDateEpoch = Math.round(new Date().getTime() / 1000);
 
             o.actionButtons = o.actionButtons || null;
             o.autoCloseSeconds = o.autoCloseSeconds || null;
             o.className = o.className || null;
             o.closeButtonText = o.closeButtonText || null;
-            o.cookieLifetime = o.cookieLifetime || null;
             o.deleteCookieOnUrl = o.deleteCookieOnUrl || null;
             o.disableCloseButton = o.disableCloseButton || null;
             o.disableCloseOnClick = o.disableCloseOnClick || false;
@@ -253,6 +252,7 @@ var promoBox = function (o) {
             o.fadeInDuration = o.fadeInDuration || 0;
             o.fadeOutDuration = o.fadeOutDuration || 0;
             o.forceOnUrl = o.forceOnUrl || null;
+            o.frequency = o.frequency || null;
             o.hideOnUrl = o.hideOnUrl || null;
             o.imagePath = o.imagePath || null;
             o.interstitialDuration = o.interstitialDuration || null;
@@ -260,13 +260,13 @@ var promoBox = function (o) {
             o.interstitialText = o.interstitialText || 'or wait %s secs';
             o.link = o.link || null;
             o.loadDelay = o.loadDelay || null;
-            o.randomFrequency = o.randomFrequency || 1;
+            o.randomWeight = o.randomWeight || 1;
             o.showOnUrl = o.showOnUrl || null;
             o.showScrollbar = o.showScrollbar || false;
             o.startDate = o.startDate || null;
             o.target = o.target || '_self';
 
-            randomFrequency = o.randomFrequency && !PBlib.checkFrequency(o.randomFrequency);
+            randomWeight = o.randomWeight && !PBlib.checkRandomSeed(o.randomWeight);
             forceOnUrl = !!o.forceOnUrl && PBlib.findInArray(o.forceOnUrl, currentUrl);
             deleteCookie = !!o.deleteCookieOnUrl && PBlib.findInArray(o.deleteCookieOnUrl, currentUrl);
 
@@ -287,7 +287,7 @@ var promoBox = function (o) {
 
             if (!forceOnUrl) {
 
-                if (randomFrequency) {
+                if (randomWeight) {
                     return false;
                 }
 
@@ -309,12 +309,12 @@ var promoBox = function (o) {
                     PBlib.cookie.eraseCookie('promoBox');
                 }
 
-                if (o.cookieLifetime) {
+                if (o.frequency) {
                     if (PBlib.cookie.readCookie('promoBox')) {
                         return false;
                     }
                     if (!deleteCookie) {
-                        PBlib.cookie.createCookie('promoBox', '1', o.cookieLifetime);
+                        PBlib.cookie.createCookie('promoBox', '1', o.frequency);
                     }
                 }
 
